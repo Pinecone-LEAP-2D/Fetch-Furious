@@ -35,7 +35,7 @@ export default function SignInForm() {
         email: values.email,
         password: values.password,
       });
-      router.push('/')
+      router.push('/dashboard')
     } catch (error) {
       console.log(error);
     }
