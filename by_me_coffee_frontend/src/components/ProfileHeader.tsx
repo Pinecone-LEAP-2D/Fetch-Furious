@@ -6,7 +6,7 @@ export default function ProfileHeader(){
         <div className="w-screen sticky top-0 px-[80px] py-2 flex justify-between">
             <div className="flex gap-3 items-center">
                 <Coffee/>
-                <div>Buy Me Coffe</div>
+                <div className="font-bold text-base">Buy Me Coffe</div>
             </div>
             <Button>Sign Out</Button>
         </div>
