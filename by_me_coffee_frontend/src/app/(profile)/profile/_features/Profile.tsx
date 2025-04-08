@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -9,7 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Camera } from "lucide-react";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 const profileSchema = z.object({
@@ -26,6 +29,9 @@ export const Profile = ({
 }: {
   setStep: (step: "profile" | "bankCard") => void;
 }) => {
+  const [uploadImage, setUploadImage] = useState(false)
+  const [avatarImage, setAvatarImage ] = useState('')
+  const [preview, setPreview] = useState<string | null>(null)
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -43,6 +49,42 @@ export const Profile = ({
       console.log(error);
     }
   };
+  const ProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.type === 'file' && e.target.files) {
+      const file = e.target.files[0]
+
+      try {
+        setUploadImage(true)
+
+        const objecturl = URL.createObjectURL(file)
+        setPreview(objecturl)
+
+        const formData = new FormData()
+        formData.append("file", file)
+        formData.append("upload_preset", "coffee")
+        
+        const response = await fetch(`https://api.cloudinary.com/v1_1/dovchxnto/image/upload`, {
+          method: "POST",
+          body: formData
+        });
+        
+        if (!response.ok) {
+          throw new Error("Upload failed");
+        }
+        
+        const result = await response.json();
+        console.log(result);
+
+        setAvatarImage(result.secure_url)
+  
+      } catch (error) {
+        console.error(error);
+        
+      } finally {
+        setUploadImage(false)
+      }
+    }
+  }
   return (
     <FormProvider {...form}>
       <form
@@ -61,9 +103,17 @@ export const Profile = ({
                 <Label className="flex flex-col gap-[12px] items-center">
                   <p className="font-semibold text-sm">Add photo</p>
                   <div className="flex w-[160px] h-[160px] justify-center items-center bg-[#E4E4E7] border-dashed border rounded-full">
-                    <Camera type="file" />
+                  {preview ? (
+                      <img 
+                        src={preview} 
+                        alt="Profile preview" 
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <Camera type="file"/>
+                    )}
                   </div>
-                  <Input {...field} className="hidden" type="file" />
+                  <Input {...field} className="hidden" type="file" onChange={ProfileImage} disabled={uploadImage}/>
                 </Label>
               </FormControl>
               <FormMessage />
