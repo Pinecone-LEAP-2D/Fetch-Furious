@@ -28,8 +28,8 @@ export const postProfile = async (req: Request, res: Response) => {
           about: about,
           name: name,
           socialMediaURL: socialMediaURL,
-          backgroundImage: "",
-          successMessage: "",
+          backgroundImage: null,
+          successMessage: null,
           user: {
             connect: { id: id },
           },
