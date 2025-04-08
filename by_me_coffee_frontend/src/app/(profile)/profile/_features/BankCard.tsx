@@ -1,4 +1,4 @@
-import { UseFormReturn } from "react-hook-form";
+'use client'
 import * as React from "react";
 
 import {
@@ -13,24 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export const BankCard = ({
-  form,
-}: {
-  form: UseFormReturn<
-    {
-      avatarImage: string;
-      name: string;
-      about: string;
-      socialMediaURL: string;
-    },
-    {
-      avatarImage: string;
-      name: string;
-      about: string;
-      socialMediaURL: string;
-    }
-  >;
-}) => {
+export const BankCard = () => {
   return (
     <div className="flex w-[510px] flex-col h-auto">
       <div className="flex p-[24px] flex-col gap-[6px]">
