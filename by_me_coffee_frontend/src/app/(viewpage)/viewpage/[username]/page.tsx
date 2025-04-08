@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { getProfile } from "@/utils/request";
+import { getManyProfile, getProfile } from "@/utils/request";
 import { Profile } from "@prisma/client";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -21,6 +21,12 @@ export default function Home() {
   };
   useEffect(() => {
     fetchProfile();
+    const getprofile = async () => {
+        const response= await getManyProfile()
+        console.log(response);
+        
+    }
+    getprofile()
   }, []);
   if (!profile?.avatarImage) {
     return <div>user not found</div>;

@@ -15,7 +15,6 @@ export const authenticationJWT = (
   next: NextFunction
 ) => {
   const token = req.headers.authorization;
-console.log(token);
 
   if (token) {
     try {
@@ -27,7 +26,6 @@ console.log(token);
       if (decoded) {
         const decoded1 = decoded as Token;
         req.userid = decoded1.userId;
-        console.log(decoded);
         next();
       }
     } catch (error) {
