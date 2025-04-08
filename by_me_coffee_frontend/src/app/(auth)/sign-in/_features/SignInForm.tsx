@@ -31,10 +31,11 @@ export default function SignInForm() {
 
   const signIn = async (values: z.infer<typeof signInSchema>) => {
     try {
-      await axios.post("/api/auth/sign-in", {
+      const response = await axios.post("/api/auth/sign-in", {
         email: values.email,
         password: values.password,
       });
+      localStorage.setItem('token', response.data.token)
       router.push('/dashboard')
     } catch (error) {
       console.log(error);
