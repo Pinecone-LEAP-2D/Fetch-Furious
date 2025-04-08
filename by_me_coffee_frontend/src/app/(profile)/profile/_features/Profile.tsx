@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { Camera } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -37,8 +38,8 @@ export const Profile = ({
   });
   const saveChanges = async (values: z.infer<typeof profileSchema>) => {
     try {
-      console.log(values);
-      setStep("bankCard");
+      await axios.post(`http://localhost:4000/profile/8`)
+      setStep('bankCard')
     } catch (error) {
       console.log(error);
     }
@@ -124,7 +125,7 @@ export const Profile = ({
           />
         </div>
         <div className="flex  gap-[10px] w-[510px] justify-end">
-          <Button type="submit" className="px-20 py-2">
+          <Button type="submit" className="px-20 py-2" onClick={() => setStep('bankCard')}>
             Continue
           </Button>
         </div>
