@@ -1,4 +1,4 @@
-import ProfileHeader from "@/components/ProfileHeader";
+import DashboardHeader from "@/components/DashBoardHeader";
 import { ReactNode } from "react";
 
 export default function ProfileLayout(
@@ -6,7 +6,7 @@ export default function ProfileLayout(
 ){
     return(
         <div className="w-screen flex flex-col">
-            <ProfileHeader/>
+            <DashboardHeader/>
             {children}
         </div>
     )
