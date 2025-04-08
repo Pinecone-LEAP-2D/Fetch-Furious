@@ -9,7 +9,6 @@ export const signUpSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   username: z.string().min(3, "Username must be at least 3 characters"),
-  about: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -17,7 +16,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const validatedData = signUpSchema.parse(body);
 
-    const { email, password, username, about } = validatedData;
+    const { email, password, username } = validatedData;
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [{ email }, { username }],
@@ -42,19 +41,6 @@ export async function POST(req: NextRequest) {
         email,
         password: hashedPassword,
         username,
-        profile: {
-          create: {
-            name: username,
-            about: about || "",
-            avatarImage: "",
-            socialMediaURL: "",
-            backgroundImage: "",
-            successMessage: "",
-          },
-        },
-      },
-      include: {
-        profile: true,
       },
     });
     return NextResponse.json(
@@ -64,7 +50,6 @@ export async function POST(req: NextRequest) {
           id: user.id,
           email: user.email,
           username: user.username,
-          profile: user.profile,
         },
       },
       { status: 201 }
