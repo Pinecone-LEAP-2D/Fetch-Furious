@@ -25,22 +25,20 @@ export default function Home() {
       socialMediaURL: "",
     },
   });
-  const saveChanges = async (values : z.infer<typeof profileSchema>) => {
+  const saveChanges = async (values: z.infer<typeof profileSchema>) => {
     try {
-        console.log(values);
-        
+      console.log(values);
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
     }
-  }
+  };
   return (
     <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(saveChanges)}>
-      <div className="flex w-full items-center h-auto flex-col gap-[24px]">
-        {step === "profile" && <Profile setStep={setStep} form={form} />}
-        {step === "bankCard" && <BankCard form={form} />}
-      </div>
+      <form onSubmit={form.handleSubmit(saveChanges)}>
+        <div className="flex w-full items-center h-auto flex-col gap-[24px]">
+          {step === "profile" && <Profile setStep={setStep} form={form} />}
+          {step === "bankCard" && <BankCard form={form} />}
+        </div>
       </form>
     </FormProvider>
   );
