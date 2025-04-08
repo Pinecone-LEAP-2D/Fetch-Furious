@@ -13,11 +13,11 @@ export default function middleware(req: NextRequest) {
   const token = req.cookies.get("auth_token")?.value;
 
   if (token && authPaths.includes(pathname)) {
-    // return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
   if (!token && !publicPaths.includes(pathname)) {
-    // return NextResponse.redirect(new URL("/sign-in", req.url));
+    return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
   return NextResponse.next();
