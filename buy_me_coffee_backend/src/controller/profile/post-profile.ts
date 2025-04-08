@@ -13,33 +13,33 @@ const profileSchema = z.object({
 });
 export const postProfile = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId;
-    const id = parseInt(userId);
-    const body = req.body;
-    console.log(req.body);
-    
-    const validatedData = profileSchema.parse(req.body);
-    if (!validatedData) {
-      res.status(400).json({ error: "error" });
-    }
-    const { avatarImage, name, about, socialMediaURL } = validatedData;
-    const user = await prisma.profile.create({
-      data: {
-        avatarImage: avatarImage,
-        about: about,
-        name: name,
-        socialMediaURL: socialMediaURL,
-        backgroundImage: "",
-        successMessage: "",
-        user: {
-          connect: { id: id },
+    const userId = req.userid;
+    if (userId) {
+      const id = parseInt(userId);
+      console.log(req.body);
+      const validatedData = profileSchema.parse(req.body);
+      if (!validatedData) {
+        res.status(400).json({ error: "error" });
+      }
+      const { avatarImage, name, about, socialMediaURL } = validatedData;
+      const user = await prisma.profile.create({
+        data: {
+          avatarImage: avatarImage,
+          about: about,
+          name: name,
+          socialMediaURL: socialMediaURL,
+          backgroundImage: "",
+          successMessage: "",
+          user: {
+            connect: { id: id },
+          },
         },
-      },
-    });
-    res.status(200).json({ succes: "" });
+      });
+      res.status(200).json({ succes: "" });
+    }
   } catch (error) {
     console.log(error);
-    
+
     res.status(500).json({ error: "aaa" });
   }
 };

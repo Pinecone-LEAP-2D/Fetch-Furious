@@ -15,12 +15,13 @@ export const authenticationJWT = (
   next: NextFunction
 ) => {
   const token = req.headers.authorization;
+console.log(token);
 
   if (token) {
     try {
       const decoded: string | jsonwebtoken.JwtPayload = jsonwebtoken.verify(
         token,
-        "aaaa"
+        "1234"
       );
 
       if (decoded) {
