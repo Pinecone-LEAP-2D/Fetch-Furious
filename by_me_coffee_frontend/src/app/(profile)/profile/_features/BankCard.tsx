@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import * as React from "react";
 
 import {
@@ -12,68 +12,212 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Label } from "@radix-ui/react-label";
+import { useRouter } from "next/navigation";
+
+
+const profileSchema = z.object({
+  country: z.string().min(1, "Select country to continue"),
+  firstName: z
+    .string()
+    .min(1, "First name must match")
+    .min(3, "FirstName must be at least 3 characters"),
+  lastName: z
+    .string()
+    .min(1, "Last name must match")
+    .min(3, "LastName must be at least 3 characters"),
+  cardNumber: z.string().min(1, "Invalid card number"),
+  expiryDate: z.string().min(1, "Invalid month"),
+});
 
 export const BankCard = () => {
+  const router = useRouter()
+  const form = useForm<z.infer<typeof profileSchema>>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      country: "",
+      firstName: "",
+      lastName: "",
+      cardNumber: "",
+      expiryDate: "",
+    },
+  });
+  const saveChanges = async (values: z.infer<typeof profileSchema>) => {
+    try {
+      console.log(values);
+      router.push('/dashboard')
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="flex w-[510px] flex-col h-auto">
-      <div className="flex p-[24px] flex-col gap-[6px]">
-        <p className="font-semibold text-2xl">How would you like to be paid?</p>
-        <p className="font-normal text-sm text-gray-400">
-          Enter location and payment details
-        </p>
-      </div>
-      <div className="flex flex-col gap-[24px]">
-        <div className="flex flex-col gap-[8px]">
-          <label className="font-medium text-sm">Select country</label>
-          <Select>
-            <SelectTrigger className="w-[400px]">
-              <SelectValue placeholder="Select a fruit" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Fruits</SelectLabel>
-                <SelectItem value="apple">Apple</SelectItem>
-                <SelectItem value="banana">Banana</SelectItem>
-                <SelectItem value="blueberry">Blueberry</SelectItem>
-                <SelectItem value="grapes">Grapes</SelectItem>
-                <SelectItem value="pineapple">Pineapple</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+    <FormProvider {...form}>
+      <form
+        onSubmit={form.handleSubmit(saveChanges)}
+        className="flex w-[510px] h-auto flex-col gap-[24px]">
+      <div className="flex w-[510px] flex-col h-auto">
+        <div className="flex p-[24px] flex-col gap-[6px]">
+          <p className="font-semibold text-2xl">
+            How would you like to be paid?
+          </p>
+          <p className="font-normal text-sm text-gray-400">
+            Enter location and payment details
+          </p>
+        </div>
+        <FormField
+          control={form.control}
+          name="country"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Label className="flex flex-col gap-[12px] items-center">
+                  <p className="font-semibold text-sm">Select country</p>
+                  <Select defaultValue={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-[400px]">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Fruits</SelectLabel>
+                        <SelectItem value="apple">Apple</SelectItem>
+                        <SelectItem value="banana">Banana</SelectItem>
+                        <SelectItem value="blueberry">Blueberry</SelectItem>
+                        <SelectItem value="grapes">Grapes</SelectItem>
+                        <SelectItem value="pineapple">Pineapple</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Label>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex justify-between gap-[12px] mt-[20px]">
+        <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <Label>FirstName</Label>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Enter your name here"
+                    className="py-2 px-3"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <Label>LastName</Label>
+                <FormControl>
+                  <Input
+                    className="resize-none"
+                    {...field}
+                    placeholder="Enter your name here"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+            control={form.control}
+            name="cardNumber"
+            render={({ field }) => (
+              <FormItem className="mt-[10px]">
+                <Label>Enter Card number</Label>
+                <FormControl>
+                  <Input
+                    className="resize-none "
+                    {...field}
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        <div className="flex gap-[16px] justify-between mt-[15px]">
+        <FormField
+            control={form.control}
+            name="expiryDate"
+            render={({ field }) => (
+              <FormItem>
+                <Label>Expires</Label>
+                <FormControl>
+                  <Input
+                    className="resize-none "
+                    {...field}
+                    type="month"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="expiryDate"
+            render={({ field }) => (
+              <FormItem>
+                <Label>Year</Label>
+                <FormControl>
+                  <Input
+                    className="resize-none"
+                    {...field}
+                    type="date"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="expiryDate"
+            render={({ field }) => (
+              <FormItem>
+                <Label>CVC</Label>
+                <FormControl>
+                  <Input
+                    className="resize-none "
+                    {...field}
+                    placeholder="CVC"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex justify-end gap-[10px] mt-[20px]">
+          <Button className="flex w-[211px] h-fit px-8 py-4 justify-center items-center gap-[8px]" type="submit">
+            Continue
+          </Button>
         </div>
       </div>
-      <div className="flex justify-between gap-[12px] mt-[20px]">
-        <div className="flex flex-col gap-[5px]">
-            <label className="font-medium text-sm">First name</label>
-            <Input className="flex h-fit px-8 py-4 items-center font-medium text-sm" placeholder="Enter your name here"/>
-        </div>
-        <div className="flex flex-col gap-[5px]">
-            <label className="font-medium text-sm">Last name</label>
-            <Input className="flex h-fit px-8 py-4 items-center font-medium text-sm" placeholder="Enter your name here"/>
-        </div>
-      </div>
-      <div className="flex h-[62px] flex-col gap-[8px] mt-[15px]">
-        <label className="font-medium text-sm ">Enter card number</label>
-        <Input className="flex h-fit px-8 py-6 items-center w-[400px]" placeholder="XXXX-XXXX-XXXX-XXXX"/>
-      </div>
-      <div className="flex gap-[16px] justify-between mt-[50px]">
-        <div className="flex flex-col gap-[8px]">
-            <label className="font-semibold text-md">Expries</label>
-            <Input className="w-[159px] h-fit flex-col flex gap-[4px]" placeholder="month"/>
-        </div>
-        <div className="flex flex-col gap-[8px]">
-            <label className="font-semibold text-md">Year</label>
-            <Input className="w-[159px] h-fit flex-col flex gap-[4px]" placeholder="year"/>
-        </div>
-        <div className="flex flex-col gap-[8px]">
-            <label className="font-semibold text-md">CVC</label>
-            <Input className="w-[159px] h-fit flex-col flex gap-[4px]" placeholder="CVC"/>
-        </div>
-      </div>
-      <div className="flex justify-end gap-[10px] mt-[20px]">
-       <Button className="flex w-[211px] h-fit px-8 py-4 justify-center items-center gap-[8px]">Continue</Button>
-      </div>
-    </div>
+      </form>
+    </FormProvider>
   );
 };
 export default BankCard;
