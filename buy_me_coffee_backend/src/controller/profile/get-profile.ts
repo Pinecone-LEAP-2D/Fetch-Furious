@@ -3,9 +3,7 @@ import { prisma } from "../../lib/prisma";
 
 export const getProfile = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-    console.log(userId);
-    
+    const { userId } = req.params;    
     const userid = parseInt(userId);
     if (typeof userid === "number") {
       const profile = await prisma.profile.findUnique({

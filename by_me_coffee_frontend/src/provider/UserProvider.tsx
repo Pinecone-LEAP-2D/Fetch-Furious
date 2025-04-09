@@ -11,8 +11,8 @@ const UserContext = createContext<UserContextType | null>(null);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-
-  const goViewPage = () => {
+  
+  const goViewPage = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;
     const decode = jwtDecode<JwtPayload>(token);
