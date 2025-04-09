@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -30,20 +29,19 @@ export default function Home() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (!profile?.avatarImage) {
-    return <div>user not found</div>;
+    return <div>user not fou     nd</div>;
   }
   return (
     <div className="w-scree items-center flex flex-col">
-      <div className="w-full h-[500px] overflow-hidden flex items-center">
+      <div className="w-full h-[500px]">
         {profile.backgroundImage ? (
-          <div className="w-full h-full overflow-hidden relative flex items-center">
-          <img
+          <Image
+            width={20}
+            height={20}
             alt="backgroundImage"
-            className="w-full h-auto"
+            className="w-full h-full"
             src={profile.backgroundImage}
           />
-  
-          </div>
         ) : (
           <ImageUpload/>
         )}
