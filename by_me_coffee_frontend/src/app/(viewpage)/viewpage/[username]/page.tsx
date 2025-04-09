@@ -8,7 +8,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ImageUpload from "../_features/ImageUpload";
-
+import DonationZone from "../_features/DonaitionZone";
 
 export default function Home() {
   const { username } = useParams();
@@ -16,7 +16,7 @@ export default function Home() {
   const [profile, setProfile] = useState<Profile>();
   const fetchProfile = async () => {
     try {
-      if (!username) return
+      if (!username) return;
       const response = await getProfile(username);
       console.log(response);
       setProfile(response?.data.result);
@@ -26,7 +26,7 @@ export default function Home() {
   };
   useEffect(() => {
     fetchProfile();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (!profile?.avatarImage) {
     return <div>user not fou     nd</div>;
@@ -35,15 +35,16 @@ export default function Home() {
     <div className="w-scree items-center flex flex-col">
       <div className="w-full h-[500px]">
         {profile.backgroundImage ? (
-          <Image
-            width={20}
-            height={20}
-            alt="backgroundImage"
-            className="w-full h-full"
-            src={profile.backgroundImage}
-          />
+          <div className="w-full h-full overflow-hidden relative flex items-center">
+            <img
+              alt="backgroundImage"
+              className="w-full h-auto"
+              src={profile.backgroundImage}
+            />
+          </div>
+
         ) : (
-          <ImageUpload/>
+          <ImageUpload />
         )}
       </div>
       <div className="flex gap-6 w-[90%] absolute z-10 top-[400px]">
@@ -77,13 +78,10 @@ export default function Home() {
           </div>
           <div className="p-6 border rounded-lg">
             <div className="text-lg font-semibold">Recent supporters</div>
+            <div className="h-150px w-full overflow-scroll"></div>
           </div>
         </div>
-        <div className="flex flex-col gap-5 w-full border rounded-lg bg-[#FFFFFF]">
-          <div className="p-6"></div>
-          <div className="p-6"></div>
-          <div className="p-6"></div>
-        </div>
+        <DonationZone profiles={profile}/>
       </div>
     </div>
   );

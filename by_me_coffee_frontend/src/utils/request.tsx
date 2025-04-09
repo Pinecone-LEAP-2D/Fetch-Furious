@@ -1,5 +1,7 @@
 import { profileSchema } from "@/app/(profile)/profile/_features/Profile";
+import { donationSchema } from "@/app/(viewpage)/viewpage/_features/DonaitionZone";
 import { bankCardSchema } from "@/schema/zodSchema";
+
 import axios from "axios";
 import { z } from "zod";
 
@@ -100,8 +102,27 @@ export const addBackground = async (
   } catch (error) {
     console.log(error);
   }
+
+}
+export const sendDonation =async (data:z.infer<typeof donationSchema>, recipientId:number) => {
+         console.log(recipientId);
+    await axios.post(`http://localhost:4000/donation/${recipientId}`,{
+      amount : data.amount,
+      socialURLOrBuyMeACoffee : data.socialURLOrBuyMeACoffee,
+      specialMessage : data.specialMessage
+    }, {
+      headers: {
+        Authorization: token,
+      },}) 
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
 };
 export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
+
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -110,6 +131,7 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   }
 
   try {
+
     await axios.post(
       `http://localhost:4000/bankcard/`,
       {
@@ -129,3 +151,4 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
     console.log(error);
   }
 };
+
