@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   if (!profile?.avatarImage) {
-    return <div>user not fou     nd</div>;
+    return <div>user not found</div>;
   }
   return (
     <div className="w-scree items-center flex flex-col">
@@ -42,7 +43,6 @@ export default function Home() {
               src={profile.backgroundImage}
             />
           </div>
-
         ) : (
           <ImageUpload />
         )}
@@ -81,7 +81,7 @@ export default function Home() {
             <div className="h-150px w-full overflow-scroll"></div>
           </div>
         </div>
-        <DonationZone profiles={profile}/>
+        <DonationZone profiles={profile} />
       </div>
     </div>
   );
