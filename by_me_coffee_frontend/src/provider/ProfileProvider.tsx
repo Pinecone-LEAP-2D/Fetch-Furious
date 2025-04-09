@@ -11,6 +11,7 @@ import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
 import { addBackground, getProfile } from "@/utils/request";
 import { Profile } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 type ProfileContext = {
   profile: Profile | undefined;
@@ -20,6 +21,7 @@ const ProfileContex = createContext<ProfileContext | null>(null);
 
 export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
+  const router = useRouter()
   const [profile, setProfile] = useState<Profile>();
   const [userID, setUserID] = useState('')
   const fetchProfile = async () => {
@@ -29,21 +31,23 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     const decode = jwtDecode<JwtPayload>(token);
     try {
       const response = await getProfile(decode.userId);
-      if (!response) {
-        console.log("user not found");
+      if (!response?.data.result) {
+        router.push('/profile')
         return;
-      }
+      } 
       await setProfile(response.data.result);
       setUserID(decode.userId)
     } catch (error) {
       console.log(error);
+    
     } finally {
       setLoading(false);
     }
   };
   useEffect(() => {
     fetchProfile();
-  }, [loading]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 const addBackgroundImage = async (image:string,) => {
     try {
         setLoading(true)

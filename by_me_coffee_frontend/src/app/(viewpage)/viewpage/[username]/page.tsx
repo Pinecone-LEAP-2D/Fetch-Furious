@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,8 @@ import { Profile } from "@prisma/client";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import ImageUpload from "../features/ImageUpload";
+import ImageUpload from "../_features/ImageUpload";
+
 
 export default function Home() {
   const { username } = useParams();
@@ -32,15 +34,16 @@ export default function Home() {
   }
   return (
     <div className="w-scree items-center flex flex-col">
-      <div className="w-full h-[500px]">
+      <div className="w-full h-[500px] overflow-hidden flex items-center">
         {profile.backgroundImage ? (
-          <Image
-            width={20}
-            height={20}
+          <div className="w-full h-full overflow-hidden relative flex items-center">
+          <img
             alt="backgroundImage"
-            className="w-full h-full"
+            className="w-full h-auto"
             src={profile.backgroundImage}
           />
+  
+          </div>
         ) : (
           <ImageUpload/>
         )}
