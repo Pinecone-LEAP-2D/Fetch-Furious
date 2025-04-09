@@ -102,36 +102,39 @@ export const addBackground = async (
   } catch (error) {
     console.log(error);
   }
-
-}
-export const sendDonation =async (data:z.infer<typeof donationSchema>, recipientId:number) => {
-         console.log(recipientId);
-    await axios.post(`http://localhost:4000/donation/${recipientId}`,{
-      amount : data.amount,
-      socialURLOrBuyMeACoffee : data.socialURLOrBuyMeACoffee,
-      specialMessage : data.specialMessage
-    }, {
-      headers: {
-        Authorization: token,
-      },}) 
+};
+export const sendDonation = async (
+  data: z.infer<typeof donationSchema>,
+  recipientId: number
+) => {
+  const token = localStorage.getItem("token");
+  try {
+    await axios.post(
+      `http://localhost:4000/donation/${recipientId}`,
+      {
+        amount: data.amount,
+        socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
+        specialMessage: data.specialMessage,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
   } catch (error) {
     console.log(error);
-    
   }
-}
-
 };
+
 export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
-
   const token = localStorage.getItem("token");
-
   if (!token) {
     console.warn("No token found in localStorage.");
     return null;
   }
 
   try {
-
     await axios.post(
       `http://localhost:4000/bankcard/`,
       {
@@ -151,4 +154,3 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
     console.log(error);
   }
 };
-
