@@ -1,6 +1,5 @@
 "use client";
-import { FaCreativeCommonsShare } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+
 import {
     Select,
     SelectContent,
@@ -10,6 +9,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { SelectGroup } from "@radix-ui/react-select";
+import { ChevronDown, Copy } from "lucide-react";
 
 export default function Home() {
 
@@ -25,7 +25,7 @@ export default function Home() {
                         </div>
                     </div>
                     <div className="flex bg-black text-white rounded w-50 justify-center items-center">
-                        <FaCreativeCommonsShare />
+                        <Copy />
                         <p className="px-1">Share page link</p>
                     </div>
 
@@ -55,7 +55,7 @@ export default function Home() {
             <div className="flex justify-between items-center p-2 m-2">
                 <p className="font-bold">Recent transactions</p>
                 <div className="flex items-center px-2 border w-30  h-8 rounded-sm justify-center">
-                    <IoIosArrowDown />
+                    <ChevronDown />
                     <button className="px-1 py-2">Amount</button>
                 </div>
             </div>

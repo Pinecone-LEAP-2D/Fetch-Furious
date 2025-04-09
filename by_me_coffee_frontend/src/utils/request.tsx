@@ -1,4 +1,5 @@
 import { profileSchema } from "@/app/(profile)/profile/_features/Profile";
+import { donationSchema } from "@/app/(viewpage)/viewpage/_features/DonaitionZone";
 import axios from "axios";
 import { z } from "zod";
 
@@ -85,6 +86,29 @@ export const addBackground = async (backgroundImage:string, userID:string) => {
     console.log(userID);
     
     await axios.put(`http://localhost:4000/profile/${userID}`,{backgroundImage:backgroundImage}, {
+      headers: {
+        Authorization: token,
+      },}) 
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+export const sendDonation =async (data:z.infer<typeof donationSchema>, recipientId:number) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.warn("No token found in localStorage.");
+    return null;
+  }
+
+  try {
+    console.log(recipientId);
+    await axios.post(`http://localhost:4000/donation/${recipientId}`,{
+      amount : data.amount,
+      socialURLOrBuyMeACoffee : data.socialURLOrBuyMeACoffee,
+      specialMessage : data.specialMessage
+    }, {
       headers: {
         Authorization: token,
       },}) 
