@@ -5,7 +5,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getManyProfile } from "@/utils/request";
-import { Profile } from "@prisma/client";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
