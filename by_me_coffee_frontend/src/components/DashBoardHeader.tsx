@@ -17,10 +17,8 @@ export default function DashboardHeader() {
   const router = useRouter();
   const { profile } = useProfile();
   if (!profile) {
-    // router.push('/profile')
-    return
+    return 
   }
-
   const signOut = async () => {
     try {
       await axios.post("/api/auth/sign-out");

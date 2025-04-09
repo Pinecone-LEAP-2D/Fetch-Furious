@@ -16,7 +16,8 @@ import { Profile } from "@prisma/client";
 
 type ProfileContext = {
   profile: Profile | undefined;
-  addBackgroundImage: (image: string) => void;
+  addBackgroundImage : (image:string)=>void
+  userID : string
 };
 const ProfileContex = createContext<ProfileContext | null>(null);
 
@@ -59,7 +60,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   return (
-    <ProfileContex.Provider value={{ profile, addBackgroundImage }}>
+    <ProfileContex.Provider value={{ profile, addBackgroundImage, userID }}>
       {children}
     </ProfileContex.Provider>
   );
