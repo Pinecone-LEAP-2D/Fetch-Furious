@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 type ProfileContext = {
   profile: Profile | undefined;
   addBackgroundImage : (image:string)=>void
+  userID : string
 };
 const ProfileContex = createContext<ProfileContext | null>(null);
 
@@ -59,7 +60,7 @@ const addBackgroundImage = async (image:string,) => {
     }
 }
   return (
-    <ProfileContex.Provider value={{ profile, addBackgroundImage }}>
+    <ProfileContex.Provider value={{ profile, addBackgroundImage, userID }}>
       {children}
     </ProfileContex.Provider>
   );

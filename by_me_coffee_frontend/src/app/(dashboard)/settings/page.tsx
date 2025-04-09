@@ -105,7 +105,7 @@ const Settings = () => {
           <div className="flex p-6 flex-col gap-[24px] border rounded-xl ">
             <p className="font-bold text-base">Personal Info</p>
             <div className="flex flex-col gap-[12px]">
-              <Label>Add photo</Label>
+              <Label>Add photo
               <div className="flex w-[160px] h-[160px] justify-center items-center bg-[#E4E4E7] border-dashed border rounded-full">
                 {preview ? (
                   <img
@@ -123,6 +123,7 @@ const Settings = () => {
                 onChange={ProfileImage}
                 disabled={uploadImage}
               />
+              </Label>
             </div>
             <div className="flex flex-col gap-[12px]">
               <div className="flex gap-[8px] flex-col">
@@ -229,7 +230,32 @@ const Settings = () => {
                   <Input className="w-[130px] flex flex-col gap-[4px]" placeholder="CVC"/>
                 </div>
               </div>
+              <Button className="flex h-[40px] px-4 py-4 justify-center items-center gap-[8px]">Save Changes</Button>
             </div>
+          </div>
+          <div className="flex p-6 flex-col gap-[24px] border rounded-xl ">
+            <p className="font-bold text-base">Set a new password</p>
+            <div className="flex flex-col gap-[12px]">
+                <div className="flex flex-col gap-[8px]">
+                    <Label className="font-semibold text-sm">New password</Label>
+                    <Input className="flex h-[40px] px-3 py-4 items-center " placeholder="Enter new password"/>
+                </div>
+                <div className="flex flex-col gap-[8px]">
+                    <Label className="font-semibold text-sm">Confirm password</Label>
+                    <Input className="flex h-[40px] px-3 py-4 items-center " placeholder="Enter new password"/>
+                </div>
+            </div>
+            <Button className="flex h-[40px] px-4 py-4 items-center justify-center gap-[8px]">Save Changes</Button>
+          </div>
+          <div className="flex p-6 flex-col gap-[24px] border rounded-xl ">
+            <p className="font-bold text-base">Success page</p>
+            <div className="flex flex-col gap-[12px]">
+                <div className="flex flex-col gap-[8px]">
+                    <Label className="font-semibold text-sm">Confirmation message</Label>
+                    <Input className="flex h-[40px] px-3 py-10 items-center " placeholder="Enter message"/>
+                </div>
+            </div>
+            <Button className="flex h-[40px] px-4 py-4 items-center justify-center gap-[8px]">Save Changes</Button>
           </div>
         </div>
       </form>

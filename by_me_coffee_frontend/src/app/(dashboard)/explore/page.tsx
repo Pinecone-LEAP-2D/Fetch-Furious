@@ -50,7 +50,7 @@ const Explore = () => {
                   <div className="h-full flex gap-6">
                     <div className="w-full">
                       <h3 className="font-semibold text-base">
-                        About Space ranger
+                        About {profiles.name}
                       </h3>
                       <p className="font-normal text-sm mt-[15px]">
                         {profiles.about}
