@@ -17,8 +17,8 @@ export default function DashboardHeader() {
   const router = useRouter();
   const { profile } = useProfile();
   if (!profile) {
-    console.log("profile not found");
-    return <div>profile not found</div>;
+    // router.push('/profile')
+    return
   }
 
   const signOut = async () => {
