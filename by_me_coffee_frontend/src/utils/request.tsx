@@ -31,7 +31,7 @@ export const postProfile = async (
     console.log(error);
   }
 };
-export const getProfile = async (userId: number) => {
+export const getProfile = async (userId: string | string[]) => {
   const token = localStorage.getItem("token");
   if (!token) {
     console.warn("No token found in localStorage.");
@@ -73,4 +73,23 @@ export const getManyProfile = async (page = 1) => {
     return null;
   }
 };
+export const addBackground = async (backgroundImage:string, userID:string) => {
+  const token = localStorage.getItem("token");
 
+  if (!token) {
+    console.warn("No token found in localStorage.");
+    return null;
+  }
+
+  try {
+    console.log(userID);
+    
+    await axios.put(`http://localhost:4000/profile/${userID}`,{backgroundImage:backgroundImage}, {
+      headers: {
+        Authorization: token,
+      },}) 
+  } catch (error) {
+    console.log(error);
+    
+  }
+}

@@ -16,7 +16,6 @@ export const postProfile = async (req: Request, res: Response) => {
     const userId = req.userid;
     if (userId) {
       const id = parseInt(userId);
-      console.log(req.body);
       const validatedData = profileSchema.parse(req.body);
       if (!validatedData) {
         res.status(400).json({ error: "error" });
