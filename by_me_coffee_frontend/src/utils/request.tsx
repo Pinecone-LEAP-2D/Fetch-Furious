@@ -55,7 +55,7 @@ export const getProfile = async (userId: string | string[]) => {
   }
 };
 
-export const getManyProfile = async (page = 1) => {
+export const getManyProfile = async (page = 1, name:string) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -68,7 +68,7 @@ export const getManyProfile = async (page = 1) => {
       headers: {
         Authorization: token,
       },
-      params: { page },
+      params: { page, name },
     });
     return response.data;
   } catch (error) {

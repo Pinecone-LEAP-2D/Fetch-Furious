@@ -8,10 +8,8 @@ type UserContextType = {
   goViewPage: () => void;
 };
 const UserContext = createContext<UserContextType | null>(null);
-
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
-  
   const goViewPage = async () => {
     const token = localStorage.getItem("token");
     if (!token) return;

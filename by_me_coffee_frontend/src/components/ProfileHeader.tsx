@@ -4,7 +4,6 @@ import { Coffee } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-
 export default function ProfileHeader(){
     const router = useRouter()
     const signOut = async () => {
@@ -16,7 +15,6 @@ export default function ProfileHeader(){
           console.log(error);
         }
       };
-    
     return(
         <div className="w-screen sticky top-0 px-[80px] z-30 py-2 flex justify-between">
             <div className="flex gap-3 items-center">
