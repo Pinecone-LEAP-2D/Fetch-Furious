@@ -13,3 +13,19 @@ export const bankCardSchema = z.object({
   cardNumber: z.string().min(1, "Invalid card number"),
   expiryDate: z.string().min(1, "Invalid month"),
 });
+export const profileSchema = z.object({
+    avatarImage: z.string(),
+    name: z
+      .string()
+      .min(1, "please enter name")
+      .min(3, "Username must be at least 3 characters"),
+    about: z.string().min(1, "Please enter info about yourself"),
+    socialMediaURL: z.string().min(1, "Please enter a social link"),
+  });
+  export const passwordSchema = z.object({
+    password : z.string().min(1, "please enter your password").min(8, "Password must be at least 8 characters"),
+    confirmPassword : z.string().min(1, "please confirm your password")
+  }).refine((data)=>data.confirmPassword === data.password,{
+    message : 'Password do not match',
+    path:['confirmPassword']
+  })
