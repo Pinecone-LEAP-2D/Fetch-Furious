@@ -34,6 +34,12 @@ const DonationZone = ({ profiles, getRecivedDonnation }: { profiles: Profile, ge
     },
   });
   const onSubmit =async (data: z.infer<typeof donationSchema>) => {
+    if (profile?.userId === profiles.userId) {
+       return
+    }
+    if (data.amount === 0) {
+      return
+    }
     try {
         await sendDonation(data, profiles.userId)
         getRecivedDonnation()
