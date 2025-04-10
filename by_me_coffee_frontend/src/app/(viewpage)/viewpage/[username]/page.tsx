@@ -3,18 +3,26 @@
 
 import { Button } from "@/components/ui/button";
 
-import { getProfile } from "@/utils/request";
+import { getDonation, getProfile } from "@/utils/request";
 import { Profile } from "@prisma/client";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ImageUpload from "../_features/ImageUpload";
 import DonationZone from "../_features/DonaitionZone";
-
+type Donation = {
+  donor: { id: number; profile: Profile };
+  amount: number;
+  createdAt: Date;
+  recipientId: null;
+  socialURLOrBuyMeACoffee: string;
+  specialMessage: string;
+};
 export default function Home() {
   const { username } = useParams();
 
   const [profile, setProfile] = useState<Profile>();
+  const [donations, sendDonation] = useState<Donation[]>();
   const fetchProfile = async () => {
     try {
       if (!username) return;
@@ -25,10 +33,17 @@ export default function Home() {
       console.log(error);
     }
   };
+  const getRecivedDonnation = async () => {
+    if (!username) return;
+    const response = await getDonation(username);
+    sendDonation(response.data);
+  };
   useEffect(() => {
     fetchProfile();
+    getRecivedDonnation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   if (!profile?.avatarImage) {
     return <div>user not found</div>;
   }
@@ -76,9 +91,32 @@ export default function Home() {
             <div className="text-lg font-semibold">Social Media URL</div>
             <div>{profile?.socialMediaURL}</div>
           </div>
-          <div className="p-6 border rounded-lg">
+          <div className="p-6 border rounded-lg flex flex-col gap-4">
             <div className="text-lg font-semibold">Recent supporters</div>
-            <div className="h-150px w-full overflow-scroll"></div>
+            <div className="h-[300px] w-full overflow-scroll p-6 flex flex-col border rounded-lg">
+              {donations?.map((donation: Donation, index) => (
+                <div key={index} className="w-full flex gap-3">
+                  <img
+                    src={
+                      donation.donor.profile.avatarImage
+                        ? donation.donor.profile.avatarImage
+                        : "/next.svg"
+                    }
+                    alt="avatar image"
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <div className="flex flex-col gap-3">
+                    <div className="font-semibold text-lg">
+                      {donation.donor.profile.name} bought ${donation.amount}{" "}
+                      coffee
+                    </div>
+                    {donation.specialMessage && (
+                      <div>{donation.specialMessage}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         <DonationZone profiles={profile} />

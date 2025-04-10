@@ -3,7 +3,7 @@ import {  z } from "zod";
 import { prisma } from "../../lib/prisma";
 const donationSchema = z.object({
   amount: z.number(),
-  specialMessage: z.string().min(1),
+  specialMessage: z.string().optional(),
   socialURLOrBuyMeACoffee: z.string().min(1),
 });
 export const postDonation = async (req: Request, res: Response) => {
@@ -19,7 +19,7 @@ export const postDonation = async (req: Request, res: Response) => {
         data: {
           amount,
           socialURLOrBuyMeACoffee,
-          specialMessage,
+          specialMessage : specialMessage || null,
           donorId: Number(userId),
           recipientId: Number(redirectId),
         },

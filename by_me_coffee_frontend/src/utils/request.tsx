@@ -154,3 +154,14 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
     console.log(error);
   }
 };
+export const getDonation = async (userId: string | string[]) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:4000/donation/${userId}`
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
