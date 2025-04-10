@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Button } from "@/components/ui/button";
+
 
 import { getDonation, getProfile } from "@/utils/request";
 import { Profile } from "@prisma/client";
@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ImageUpload from "../_features/ImageUpload";
 import DonationZone from "../_features/DonaitionZone";
+import { EditProfile } from "../_features/EditProfile";
 type Donation = {
   donor: { id: number; profile: Profile };
   amount: number;
@@ -78,9 +79,7 @@ export default function Home() {
                 />
                 <div className="text-xl font-semibold">{profile.name}</div>
               </div>
-              <Button variant="secondary" className="cursor-pointer">
-                Edit Page
-              </Button>
+            <EditProfile />
             </div>
             <div className="flex flex-col gap-6">
               <p className="font-semibold text-lg">About {profile.name}</p>
@@ -93,7 +92,7 @@ export default function Home() {
           </div>
           <div className="p-6 border rounded-lg flex flex-col gap-4">
             <div className="text-lg font-semibold">Recent supporters</div>
-            <div className="h-[300px] w-full overflow-scroll p-6 flex flex-col border rounded-lg">
+            <div className="h-[250px] w-full overflow-scroll p-6 flex gap-4 flex-col border rounded-lg">
               {donations?.map((donation: Donation, index) => (
                 <div key={index} className="w-full flex gap-3">
                   <img
@@ -119,7 +118,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <DonationZone profiles={profile} />
+        <DonationZone profiles={profile} getRecivedDonnation={getRecivedDonnation}/>
       </div>
     </div>
   );
