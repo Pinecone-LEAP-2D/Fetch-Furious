@@ -26,30 +26,37 @@ type Donation = {
 };
 export default function Home() {
   const amounts = [1, 3, 5, 10, 15, 20];
-  const [amount, setAmount] = useState<number | null>(null)
+  const [amount, setAmount] = useState<number | null>(null);
   const [donations, setDonation] = useState<Donation[]>();
-  const [totalAmount, setTotalAmount] = useState(0)
-  const [dateFilter, setDateFilter] = useState<string | number>(30)
-  const { profile } = useProfile();
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [dateFilter, setDateFilter] = useState<string | number>(30);
+  const { profile , loading} = useProfile();
   const fetchDonation = async () => {
-    if (!profile?.userId) return;
-    const response = await getDonationWithFilter(profile?.userId, amount, dateFilter);
-    setDonation(response.data);
-    setTotalAmount(response.totalAmount)
+    if (profile) {
+      const response = await getDonationWithFilter(
+        profile?.userId,
+        amount,
+        dateFilter
+      );
+      setDonation(response.data);
+      setTotalAmount(response.totalAmount);
+    }
   };
   useEffect(() => {
     fetchDonation();
     console.log(amount);
-    
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount, dateFilter]);
-  const handleSelect = (value:string)=>{
-    setAmount(Number(value))
-  }
-  const handleSelectDate = (value:string)=>{
-    setDateFilter(Number(value))
-  }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [amount, dateFilter, loading]);
+  const handleSelect = (value: string) => {
+    setAmount(Number(value));
+  };
+  const handleSelectDate = (value: string) => {
+    setDateFilter(Number(value));
+  };
+  if (!profile) {
+    return <div>loading</div>;
+  }
   return (
     <div className="max-w-[800px] rounded-xl">
       <div className="flex flex-col  max-w-[800px] border p-4 m-2 rounded-sm">
@@ -81,7 +88,7 @@ export default function Home() {
                 <SelectLabel>Days</SelectLabel>
                 <SelectItem value="30">Last 30days</SelectItem>
                 <SelectItem value="90">Last 3month</SelectItem>
-                <SelectItem value=''>All time</SelectItem>
+                <SelectItem value="10000">All time</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -98,8 +105,10 @@ export default function Home() {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Amount</SelectLabel>
-                {amounts.map((amount, index)=>(
-                  <SelectItem key={index} value={amount.toString()}>${amount}</SelectItem>
+                {amounts.map((amount, index) => (
+                  <SelectItem key={index} value={amount.toString()}>
+                    ${amount}
+                  </SelectItem>
                 ))}
               </SelectGroup>
             </SelectContent>
