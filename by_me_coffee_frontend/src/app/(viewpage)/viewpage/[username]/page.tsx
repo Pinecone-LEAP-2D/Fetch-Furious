@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-
-
 import { getDonation, getProfile } from "@/utils/request";
 import { Profile } from "@prisma/client";
 import Image from "next/image";
@@ -11,6 +9,8 @@ import { useEffect, useState } from "react";
 import ImageUpload from "../_features/ImageUpload";
 import DonationZone from "../_features/DonaitionZone";
 import { EditProfile } from "../_features/EditProfile";
+import Loading from "@/components/Loading";
+import { useProfile } from "@/provider/ProfileProvider";
 type Donation = {
   donor: { id: number; profile: Profile };
   amount: number;
@@ -21,8 +21,8 @@ type Donation = {
 };
 export default function Home() {
   const { username } = useParams();
-
-  const [profile, setProfile] = useState<Profile>();
+const {profile} = useProfile()
+  const [profile1, setProfile] = useState<Profile>();
   const [donations, sendDonation] = useState<Donation[]>();
   const fetchProfile = async () => {
     try {
@@ -45,22 +45,24 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!profile?.avatarImage) {
-    return <div>user not found</div>;
+  if (!profile1?.avatarImage) {
+    return <Loading />;
   }
   return (
     <div className="w-scree items-center flex flex-col">
       <div className="w-full h-[500px]">
-        {profile.backgroundImage ? (
+        {profile1.backgroundImage ? (
           <div className="w-full h-full overflow-hidden relative flex items-center">
             <img
               alt="backgroundImage"
               className="w-full h-auto"
-              src={profile.backgroundImage}
+              src={profile1.backgroundImage}
             />
           </div>
         ) : (
-          <ImageUpload />
+          <>
+            {profile1.userId === profile?.userId && (<ImageUpload />)}
+          </>
         )}
       </div>
       <div className="flex gap-6 w-[90%] absolute z-10 top-[400px]">
@@ -73,22 +75,22 @@ export default function Home() {
                   height={12}
                   width={12}
                   src={
-                    profile.avatarImage ? profile.avatarImage : "/vercel.svg"
+                    profile1.avatarImage ? profile1.avatarImage : "/vercel.svg"
                   }
                   className="border w-12 h-12 rounded-full"
                 />
-                <div className="text-xl font-semibold">{profile.name}</div>
+                <div className="text-xl font-semibold">{profile1.name}</div>
               </div>
-            <EditProfile />
+              {profile1.userId === profile?.userId && (<EditProfile />)}
             </div>
             <div className="flex flex-col gap-6">
-              <p className="font-semibold text-lg">About {profile.name}</p>
-              <div>{profile?.about}</div>
+              <p className="font-semibold text-lg">About {profile1.name}</p>
+              <div>{profile1?.about}</div>
             </div>
           </div>
           <div className="p-6 border rounded-lg flex flex-col gap-6">
             <div className="text-lg font-semibold">Social Media URL</div>
-            <div>{profile?.socialMediaURL}</div>
+            <div>{profile1?.socialMediaURL}</div>
           </div>
           <div className="p-6 border rounded-lg flex flex-col gap-4">
             <div className="text-lg font-semibold">Recent supporters</div>
@@ -118,7 +120,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <DonationZone profiles={profile} getRecivedDonnation={getRecivedDonnation}/>
+        <DonationZone
+          profiles={profile1}
+          getRecivedDonnation={getRecivedDonnation}
+        />
       </div>
     </div>
   );
