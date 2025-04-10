@@ -1,7 +1,7 @@
 import { profileSchema } from "@/app/(profile)/profile/_features/Profile";
 import { donationSchema } from "@/app/(viewpage)/viewpage/_features/DonaitionZone";
 import { bankCardSchema } from "@/schema/zodSchema";
-
+import { addDays} from "date-fns";
 import axios from "axios";
 import { z } from "zod";
 
@@ -154,10 +154,26 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
     console.log(error);
   }
 };
-export const getDonation = async (userId: string | string[]) => {
+export const getDonation = async (userId: string | string[] | number) => {
   try {
     const response = await axios.get(
-      `http://localhost:4000/donation/${userId}`
+      `http://localhost:4000/donation/all/${userId}`,
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getDonationWithFilter = async (userId: string | string[] | number, amount:number | null | undefined, date : number | string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:4000/donation/${userId}`,{
+        params : {
+          amount : amount,
+          date : addDays(new Date(), - date).toISOString()
+        }
+      }
     );
     console.log(response);
     return response.data;
