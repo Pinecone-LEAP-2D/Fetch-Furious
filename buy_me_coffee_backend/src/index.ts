@@ -4,6 +4,7 @@ import { ProfileRouter } from './router/profile.routes'
 import cors from "cors"
 import { DonationRouter } from './router/donation.routes'
 import { BankRouter } from './router/bank.routes'
+import { UserRouter } from './router/user.routes'
 
 const app = express()
 const PORT = 4000
@@ -15,6 +16,7 @@ app.get('/', (req:Request, res:Response) => {
 app.use('/profile', ProfileRouter)
 app.use('/donation', DonationRouter)
 app.use('/bankcard', BankRouter)
+app.use('/user', UserRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`)
