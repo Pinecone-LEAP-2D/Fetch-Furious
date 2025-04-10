@@ -1,8 +1,10 @@
 import express from "express";
 import { authenticationJWT } from "../middleware/User/jwt";
 import { postDonation } from "../controller/donation/post-donation";
+import { getDontion } from "../controller/donation/get-donation.controller";
 
 export const DonationRouter = express.Router();
 
 DonationRouter.post("/:redirectId", authenticationJWT, postDonation);
+DonationRouter.get('/:userId', getDontion)
 

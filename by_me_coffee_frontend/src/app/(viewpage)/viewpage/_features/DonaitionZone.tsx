@@ -17,7 +17,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 export const donationSchema = z.object({
   socialURLOrBuyMeACoffee: z.string().min(1, "please enter your social URL"),
-  specialMessage: z.string().min(1, "please enter your special message"),
+  specialMessage: z.string().optional(),
   amount: z.number(),
 });
 const DonationZone = ({ profiles }: { profiles: Profile }) => {
@@ -43,7 +43,7 @@ const DonationZone = ({ profiles }: { profiles: Profile }) => {
   };
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-8 w-full border rounded-lg bg-[#FFFFFF] p-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-fit flex-col gap-8 w-full border rounded-lg bg-[#FFFFFF] p-6">
         <div className="flex flex-col gap-6">
           <div className="text-2xl font-semibold">
             Buy {profiles?.name} a Coffee
