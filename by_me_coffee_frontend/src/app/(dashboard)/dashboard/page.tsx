@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
 "use client";
-
 import {
   Select,
   SelectContent,
@@ -89,7 +88,6 @@ export default function Home() {
         </div>
         <p className="text-3xl mx-2 p-2 font-bold">{totalAmount}</p>
       </div>
-
       <div className="flex justify-between items-center p-2 m-2">
         <p className="font-bold">Recent transactions</p>
         <div className="flex items-center px-2 row-reverse  h-8 rounded-sm justify-center">
@@ -106,7 +104,6 @@ export default function Home() {
               </SelectGroup>
             </SelectContent>
           </Select>
-          {/* <button className="px-1 py-2">Amount</button> */}
         </div>
       </div>
       {donations?.map((donation, index) => (
