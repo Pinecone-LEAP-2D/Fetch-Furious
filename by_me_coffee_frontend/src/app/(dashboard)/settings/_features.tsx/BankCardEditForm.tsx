@@ -13,8 +13,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { bankCardSchema } from "@/schema/zodSchema";
+import { putBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { z } from "zod";
 
 export default function BankCardEdit() {
@@ -28,9 +30,20 @@ export default function BankCardEdit() {
       expiryDate: "",
     },
   });
+  const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
+      try {
+        console.log(value);
+  
+          const res = await putBankCard(value)
+          console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    const notify = () => toast("Success Pay");
   return (
     <FormProvider {...form}>
-      <form>
+      <form onSubmit={form.handleSubmit(updatedBanCard)}>
         <div className="flex p-6 flex-col gap-[24px] border w-[510px] rounded-xl mt-[20px]">
           <p className="font-bold text-base">Payment details</p>
           <div className="flex flex-col gap-[24px]">
@@ -109,7 +122,7 @@ export default function BankCardEdit() {
                 />
               </div>
             </div>
-            <Button className="flex h-[40px] px-4 py-4 justify-center items-center gap-[8px]">
+            <Button className="flex h-[40px] px-4 py-4 justify-center items-center gap-[8px]" onClick={() => notify}>
               Save Changes
             </Button>
           </div>
