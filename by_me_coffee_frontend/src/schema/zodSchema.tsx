@@ -14,13 +14,14 @@ export const bankCardSchema = z.object({
   expiryDate: z.string().min(1, "Invalid month"),
 });
 export const profileSchema = z.object({
-    avatarImage: z.string(),
+    avatarImage: z.string().optional(),
     name: z
       .string()
       .min(1, "please enter name")
       .min(3, "Username must be at least 3 characters"),
     about: z.string().min(1, "Please enter info about yourself"),
     socialMediaURL: z.string().min(1, "Please enter a social link"),
+    successMessage : z.string().min(1, "Please enter a Message")
   });
   export const passwordSchema = z.object({
     password : z.string().min(1, "please enter your password").min(8, "Password must be at least 8 characters"),

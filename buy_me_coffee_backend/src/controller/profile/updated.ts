@@ -13,7 +13,8 @@ export const putProfile = async (req: Request, res: Response) => {
     try {
         const userId = req.userid
         const data = accountProfile.parse(req.body)
-
+        console.log(req.body);
+        
         if (userId) {
             if (data) {
                 const id = Number(userId)

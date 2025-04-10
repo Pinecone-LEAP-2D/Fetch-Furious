@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useProfile } from "@/provider/ProfileProvider";
 import { profileSchema } from "@/schema/zodSchema";
 import { putProfile } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,157 +15,154 @@ import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
 export default function ProfileEdit() {
+  const { profile } = useProfile();
+  const [image, setImage] = useState<File>();
+  const [preview, setPreview] = useState<string | undefined | null>(
+    profile?.avatarImage
+  );
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      avatarImage: "",
-      name: "",
-      about: "",
-      socialMediaURL: "",
+      avatarImage: profile?.avatarImage ? profile.avatarImage : "",
+      name: profile?.name ? profile.name : "",
+      about: profile?.about ? profile.about : "",
+      socialMediaURL: profile?.socialMediaURL ? profile.socialMediaURL : "",
     },
   });
-  const [uploadImage, setUploadImage] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [avatarImage, setAvatarImage] = useState('')
-  const ProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const generatePreview = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.type === "file" && e.target.files) {
       const file = e.target.files[0];
-      try {
-        setUploadImage(true);
-        const objecturl = URL.createObjectURL(file);
-        setPreview(objecturl);
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "coffee");
-        const response = await fetch(
-          `https://api.cloudinary.com/v1_1/dovchxnto/image/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-        if (!response.ok) {
-          throw new Error("Upload failed");
-        }
-        const result = await response.json();
-        setAvatarImage(result.secure_url)
-        form.setValue("avatarImage", result.secure_url);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setUploadImage(false);
-      }
+      const objecturl = URL.createObjectURL(file);
+      setPreview(objecturl);
+      setImage(file);
     }
   };
-
-  const updatedProfile = async (value: z.infer<typeof profileSchema>) => {
+  const editProfile = async (value: z.infer<typeof profileSchema>) => {
+    console.log(value);
+    
     try {
-      console.log(value);
+      if (!image) return;
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "coffee");
 
-        const res = await putProfile(value, avatarImage)
-        console.log(res);
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/dovchxnto/image/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+      const result = await response.json();
+      await putProfile(value, result.secure_url);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   return (
-    <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit(updatedProfile)}
-        className="flex w-[510px] h-auto flex-col gap-[24px]"
-      >
-        <div className="flex flex-col gap-1">
-          <p className="font-semibold text-2xl">My account</p>
-        </div>
-        <div className="flex p-6 flex-col gap-[24px] border rounded-xl ">
-          <p className="font-bold text-base">Personal Info</p>
-          <FormField
-            control={form.control}
-            name="avatarImage"
-            render={({}) => (
-              <FormItem className="flex flex-col gap-[12px]">
-                <Label>
-                  Add photo
-                  <div className="flex w-[160px] h-[160px] justify-center items-center bg-[#E4E4E7] border-dashed border rounded-full">
-                    {preview ? (
-                      <img
-                        src={preview}
-                        alt="Profile preview"
-                        className="w-full h-full object-cover rounded-full"
+    <div className="w-[510px]">
+      <div className="flex flex-col gap-1">
+        <p className="font-semibold text-2xl">My account</p>
+      </div>
+      <div className="flex p-6 flex-col gap-[24px] border rounded-xl ">
+        <p className="font-bold text-base">Personal Info</p>
+        <FormProvider {...form}>
+          <form
+            onSubmit={form.handleSubmit(editProfile)}
+            className="flex w-[510px] h-auto flex-col gap-[24px]"
+          >
+            <FormField
+              control={form.control}
+              name="avatarImage"
+              render={({}) => (
+                <FormItem className="flex flex-col gap-[12px]">
+                  <Label>
+                    Add photo
+                    <div className="flex w-[160px] h-[160px] justify-center items-center bg-[#E4E4E7] border-dashed border rounded-full">
+                      {preview ? (
+                        <img
+                          src={preview}
+                          alt="Profile preview"
+                          className="w-full h-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <Camera type="file" />
+                      )}
+                    </div>
+                    <FormControl>
+                      <Input
+                        className="hidden"
+                        type="file"
+                        onChange={generatePreview}
                       />
-                    ) : (
-                      <Camera type="file" />
-                    )}
-                  </div>
+                    </FormControl>
+                  </Label>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-[12px]">
+                  <Label className="font-medium text-sm">Name</Label>
                   <FormControl>
                     <Input
-                      className="hidden"
-                      type="file"
-                      onChange={ProfileImage}
-                      disabled={uploadImage}
+                      {...field}
+                      placeholder="Enter name"
+                      className="flex px-3 py-4 items-center"
                     />
                   </FormControl>
-                </Label>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-[12px]">
-                <Label className="font-medium text-sm">Name</Label>
-                <FormControl>
-                  <Input
-                  {...field}
-                    placeholder="Enter name"
-                    className="flex px-3 py-4 items-center"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+                </FormItem>
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="about"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-[12px]">
-                <Label className="font-medium text-sm">About</Label>
-                <FormControl>
-                  <Input
-                  {...field}
-                    placeholder="Write about yourself here"
-                    className="flex px-3 py-4 items-center"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="socialMediaURL"
-            render={({ field }) => (
-              <FormItem className="flex flex-col gap-[12px]">
-                <Label className="font-medium text-sm">Social URL media</Label>
-                <FormControl>
-                  <Input
-                  {...field}
-                    placeholder="https://"
-                    className="flex px-3 py-4 items-center"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="flex px-4 py-4 justify-center items-center gap-[8px]"
-          >
-            Save Changes
-          </Button>
-        </div>
-      </form>
-    </FormProvider>
+            <FormField
+              control={form.control}
+              name="about"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-[12px]">
+                  <Label className="font-medium text-sm">About</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Write about yourself here"
+                      className="flex px-3 py-4 items-center"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="socialMediaURL"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-[12px]">
+                  <Label className="font-medium text-sm">
+                    Social URL media
+                  </Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="https://"
+                      className="flex px-3 py-4 items-center"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="flex px-4 py-4 justify-center items-center gap-[8px]"
+            >
+              Save Changes
+            </Button>
+          </form>
+        </FormProvider>
+      </div>
+    </div>
   );
 }
