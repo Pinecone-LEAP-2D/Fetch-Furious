@@ -20,7 +20,7 @@ export const donationSchema = z.object({
   specialMessage: z.string().optional(),
   amount: z.number(),
 });
-const DonationZone = ({ profiles }: { profiles: Profile }) => {
+const DonationZone = ({ profiles, getRecivedDonnation }: { profiles: Profile, getRecivedDonnation: ()=>void }) => {
   const { profile } = useProfile();
   const amounts = [1, 2, 3, 5, 10, 15];
   const form = useForm<z.infer<typeof donationSchema>>({
@@ -36,6 +36,7 @@ const DonationZone = ({ profiles }: { profiles: Profile }) => {
   const onSubmit =async (data: z.infer<typeof donationSchema>) => {
     try {
         await sendDonation(data, profiles.userId)
+        getRecivedDonnation()
     } catch (error) {
         console.log(error);
         
