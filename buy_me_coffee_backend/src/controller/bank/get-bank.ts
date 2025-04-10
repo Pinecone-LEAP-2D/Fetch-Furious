@@ -12,13 +12,12 @@ export const getBank = async (req: Request, res: Response) => {
       });
       if (!cardNumber) {
         res.status(404).send({ success: false, message: "Bank not found" });
-      }else{
-
-      res.status(200).json({
-        success: true,
-        data: cardNumber,
-      });
-    }
+      } else {
+        res.status(200).json({
+          success: true,
+          data: cardNumber,
+        });
+      }
     }
   } catch (error) {
     console.error("Error fetching bank details:", error);

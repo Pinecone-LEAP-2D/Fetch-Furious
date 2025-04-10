@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../lib/prisma";
-import { date, z } from "zod";
+import { z } from "zod";
 
 const bankCardSchema = z.object({
   country: z.string().min(1, "country required"),
@@ -43,7 +43,6 @@ export const postBank = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    console.error(error);
     res.status(500).send({
       success: false,
       message: "an error occured while adding bank data",

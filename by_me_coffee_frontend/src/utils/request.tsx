@@ -1,10 +1,12 @@
 import { profileSchema } from "@/app/(profile)/profile/_features/Profile";
 import { donationSchema } from "@/app/(viewpage)/viewpage/_features/DonaitionZone";
-import { bankCardSchema } from "@/schema/zodSchema";
-import { addDays} from "date-fns";
+import { bankCardSchema, passwordSchema } from "@/schema/zodSchema";
+import { addDays } from "date-fns";
 import axios from "axios";
 import { z } from "zod";
-
+export const successMessageSchema = z.object({
+  successMessage : z.string()
+})
 export const postProfile = async (
   values: z.infer<typeof profileSchema>,
   image: string
@@ -55,7 +57,7 @@ export const getProfile = async (userId: string | string[]) => {
   }
 };
 
-export const getManyProfile = async (page = 1, name:string) => {
+export const getManyProfile = async (page = 1, name: string) => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -81,15 +83,11 @@ export const addBackground = async (
   userID: string
 ) => {
   const token = localStorage.getItem("token");
-
   if (!token) {
     console.warn("No token found in localStorage.");
     return null;
   }
-
   try {
-    console.log(userID);
-
     await axios.put(
       `http://localhost:4000/profile/backgorund/${userID}`,
       { backgroundImage: backgroundImage },
@@ -157,7 +155,7 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
 export const getDonation = async (userId: string | string[] | number) => {
   try {
     const response = await axios.get(
-      `http://localhost:4000/donation/all/${userId}`,
+      `http://localhost:4000/donation/all/${userId}`
     );
     console.log(response);
     return response.data;
@@ -165,14 +163,19 @@ export const getDonation = async (userId: string | string[] | number) => {
     console.log(error);
   }
 };
-export const getDonationWithFilter = async (userId: string | string[] | number, amount:number | null | undefined, date : number | string) => {
+export const getDonationWithFilter = async (
+  userId: string | string[] | number,
+  amount: number | null | undefined,
+  date: number | string
+) => {
   try {
     const response = await axios.get(
-      `http://localhost:4000/donation/${userId}`,{
-        params : {
-          amount : amount,
-          date : addDays(new Date(), - date).toISOString()
-        }
+      `http://localhost:4000/donation/${userId}`,
+      {
+        params: {
+          amount: amount,
+          date: addDays(new Date(), -date).toISOString(),
+        },
       }
     );
     console.log(response);
@@ -181,83 +184,86 @@ export const getDonationWithFilter = async (userId: string | string[] | number, 
     console.log(error);
   }
 };
-export const putProfile = async (values: z.infer<typeof profileSchema>, image: string) => {
+export const putProfile = async (
+  values: z.infer<typeof profileSchema>,
+  image: string
+) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.warn("No token found in localStorage.");
+    return null;
+  }  
+  try {
+    const response = await axios.put(
+      "http://localhost:4000/profile",
+      {
+        avatarImage: image,
+        name: values.name,
+        about: values.about,
+        socialMediaURL: values.socialMediaURL,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   const token = localStorage.getItem("token");
   if (!token) {
     console.warn("No token found in localStorage.");
     return null;
   }
-  try {
-    const response = await axios.put("http://localhost:4000/profile", {
-      avatarImage: image,
-        name: values.name,
-        about: values.about,
-        socialMediaURL: values.socialMediaURL,
-    }, 
-    {
-      headers: {
-        Authorization: token,
-      },
-    }
-  );
-  console.log(response);
-  
-  } catch (error) {
-    console.log(error);
-    
-  }
-}
-export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
-  const token = localStorage.getItem("token")
-  if (!token) {
-    console.warn("No token found in localStorage.");
-    return null
-  }
 
   try {
-    const response = await axios.put(`http://localhost:4000/bankcard`, {
-      country: value.country,
+    const response = await axios.put(
+      `http://localhost:4000/bankcard`,
+      {
+        country: value.country,
         firstName: value.firstName,
         lastName: value.lastName,
         cardNumber: value.cardNumber,
         expiryDate: value.expiryDate,
-    }, 
-    {
-      headers: {
-        Authorization: token
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
       }
-    }
-  ) 
-  console.log(response);
-  
+    );
+    console.log(response);
   } catch (error) {
     console.log(error);
-    
   }
-} 
-export const putSuccess = async (values: z.infer<typeof profileSchema>) => {
+};
+export const putSuccess = async (values: z.infer<typeof successMessageSchema>) => {
   const token = localStorage.getItem("token");
   if (!token) {
     console.warn("No token found in localStorage.");
     return null;
   }
   try {
-    const response = await axios.put("http://localhost:4000/profile", {
-      successMessage : values.successMessage
-    }, 
-    {
-      headers: {
-        Authorization: token,
+    const response = await axios.put(
+      "http://localhost:4000/profile",
+      {
+        successMessage: values.successMessage,
       },
-    }
-  );
-  console.log(response);
-  
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    console.log(response);
   } catch (error) {
     console.log(error);
-    
   }
-}
+};
 export const putUser = async (values: z.infer<typeof passwordSchema>) => {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -265,19 +271,19 @@ export const putUser = async (values: z.infer<typeof passwordSchema>) => {
     return null;
   }
   try {
-    const response = await axios.put("http://localhost:4000/user", {
-      password: values.password
-    }, 
-    {
-      headers: {
-        Authorization: token,
+    const response = await axios.put(
+      "http://localhost:4000/user",
+      {
+        password: values.password,
       },
-    }
-  );
-  console.log(response);
-  
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    console.log(response);
   } catch (error) {
     console.log(error);
-    
   }
-}
+};

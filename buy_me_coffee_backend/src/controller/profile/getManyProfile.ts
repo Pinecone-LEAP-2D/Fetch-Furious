@@ -7,15 +7,16 @@ export const getManyProfiles = async (req: Request, res: Response) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const name = (req.query.name as string) || undefined;
-    console.log(name);
     const limit = 10;
     const skip = (page - 1) * limit;
-    const filter:Prisma.ProfileWhereInput = name ? {
-        name: {
+    const filter: Prisma.ProfileWhereInput = name
+      ? {
+          name: {
             contains: name,
             mode: "insensitive",
-        },
-    } : {};
+          },
+        }
+      : {};
     const totalResults = await prisma.profile.count({ where: filter });
     const results = await prisma.profile.findMany({
       where: filter,
@@ -30,7 +31,6 @@ export const getManyProfiles = async (req: Request, res: Response) => {
       currentPage: page,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "server error sss" });
   }
 };
