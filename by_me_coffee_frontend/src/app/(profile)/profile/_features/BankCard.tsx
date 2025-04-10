@@ -74,17 +74,17 @@ export const BankCard = () => {
                       defaultValue={field.value}
                       onValueChange={field.onChange}
                     >
-                      <SelectTrigger className="w-[400px]">
-                        <SelectValue placeholder="Select" />
+                      <SelectTrigger className="w-[460px]">
+                        <SelectValue placeholder="Select a Country" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel>Fruits</SelectLabel>
-                          <SelectItem value="apple">Apple</SelectItem>
-                          <SelectItem value="banana">Banana</SelectItem>
-                          <SelectItem value="blueberry">Blueberry</SelectItem>
-                          <SelectItem value="grapes">Grapes</SelectItem>
-                          <SelectItem value="pineapple">Pineapple</SelectItem>
+                          <SelectLabel>Country</SelectLabel>
+                          <SelectItem value="America">🇺🇸America</SelectItem>
+                          <SelectItem value="China">🇨🇳China</SelectItem>
+                          <SelectItem value="Russia">🇷🇺Russia</SelectItem>
+                          <SelectItem value="Thailand">🇹🇭Thailand</SelectItem>
+                          <SelectItem value="Mongolia">🇲🇳Mongolia</SelectItem>
                         </SelectGroup>
                       </SelectContent>
                     </Select>
