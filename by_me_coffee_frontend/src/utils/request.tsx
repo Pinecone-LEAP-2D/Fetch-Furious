@@ -91,7 +91,7 @@ export const addBackground = async (
     console.log(userID);
 
     await axios.put(
-      `http://localhost:4000/profile/${userID}`,
+      `http://localhost:4000/profile/backgorund/${userID}`,
       { backgroundImage: backgroundImage },
       {
         headers: {
@@ -165,3 +165,29 @@ export const getDonation = async (userId: string | string[]) => {
     console.log(error);
   }
 };
+export const putProfile = async (values: z.infer<typeof profileSchema>, image: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.warn("No token found in localStorage.");
+    return null;
+  }
+  try {
+    const response = await axios.put("http://localhost:4000/profile", {
+      avatarImage: image,
+        name: values.name,
+        about: values.about,
+        socialMediaURL: values.socialMediaURL,
+    }, 
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+  console.log(response);
+  
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
