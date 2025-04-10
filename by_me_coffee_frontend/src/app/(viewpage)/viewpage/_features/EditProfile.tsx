@@ -23,13 +23,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { profileSchema } from "@/app/(profile)/profile/_features/Profile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
 import { useProfile } from "@/provider/ProfileProvider";
 import { putProfile } from "@/utils/request";
 
+const profileSchema = z.object({
+  avatarImage: z.string().optional(),
+  name: z
+    .string()
+    .min(1, "please enter name")
+    .min(3, "Username must be at least 3 characters"),
+  about: z.string().min(1, "Please enter info about yourself"),
+  socialMediaURL: z.string().min(1, "Please enter a social link"),
+});
 export function EditProfile() {
   const { profile } = useProfile();
   const [image, setImage] = useState<File>();
@@ -76,7 +84,7 @@ export function EditProfile() {
       console.error(error);
     }
   };
- 
+
   return (
     <Dialog>
       <DialogTrigger asChild>

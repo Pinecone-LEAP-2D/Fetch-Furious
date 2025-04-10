@@ -24,7 +24,6 @@ export const profileSchema = z.object({
     .min(3, "Username must be at least 3 characters"),
   about: z.string().min(1, "Please enter info about yourself"),
   socialMediaURL: z.string().min(1, "Please enter a social link"),
-  successMessage: z.string().min(1)
 });
 export const Profile = ({
   setStep,
@@ -41,7 +40,6 @@ export const Profile = ({
       name: "",
       about: "",
       socialMediaURL: "",
-      successMessage: ""
     },
   });
   const saveChanges = async (values: z.infer<typeof profileSchema>) => {

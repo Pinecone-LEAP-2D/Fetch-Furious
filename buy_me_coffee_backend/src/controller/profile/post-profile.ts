@@ -34,10 +34,9 @@ export const postProfile = async (req: Request, res: Response) => {
           },
         },
       });
-      res.status(200).json({ succes: "" });
+      res.status(200).json({ succes: true });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "aaa" });
+    res.status(500).json({ error: "server error" });
   }
 };

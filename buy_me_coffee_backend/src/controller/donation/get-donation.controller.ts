@@ -4,17 +4,14 @@ import { prisma } from "../../lib/prisma";
 export const getDontion = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const { amount , date} = req.query;
-    
-   console.log(amount);
-
+    const { amount, date } = req.query;
     if (userId) {
       const donations = await prisma.donation.findMany({
         where: {
           recipientId: parseInt(userId),
           createdAt: {
-            gte :new Date(String(date)).toISOString()
-          }
+            gte: new Date(String(date)).toISOString(),
+          },
         },
         include: {
           donor: {
@@ -30,19 +27,20 @@ export const getDontion = async (req: Request, res: Response) => {
           },
         },
       });
-      const totalAmount = donations.reduce((sum, donation) => sum + donation.amount, 0)
-      const donationsfiltered = donations.filter((donation)=>donation.amount=== Number(amount)) || donations
+      const totalAmount = donations.reduce(
+        (sum, donation) => sum + donation.amount,
+        0
+      );
+      const donationsfiltered =
+        donations.filter((donation) => donation.amount === Number(amount)) ||
+        donations;
       if (amount) {
-        res.status(200).send({ data: donationsfiltered , totalAmount});
-      }else{
-        res.status(200).send({ data: donations , totalAmount});
+        res.status(200).send({ data: donationsfiltered, totalAmount });
+      } else {
+        res.status(200).send({ data: donations, totalAmount });
       }
-   
     }
-
-
   } catch (error) {
-    console.log(error);
     res.status(500).send({ error: "server error" });
   }
 };

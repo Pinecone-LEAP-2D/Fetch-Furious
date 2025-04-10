@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import {  z } from "zod";
+import { z } from "zod";
 import { prisma } from "../../lib/prisma";
 const donationSchema = z.object({
   amount: z.number(),
@@ -10,8 +10,6 @@ export const postDonation = async (req: Request, res: Response) => {
   try {
     const { redirectId } = req.params;
     const userId = req.userid;
-    console.log(req.body);
-    
     const data = donationSchema.parse(req.body);
     if (data && userId && redirectId) {
       const { amount, specialMessage, socialURLOrBuyMeACoffee } = data;
@@ -19,7 +17,7 @@ export const postDonation = async (req: Request, res: Response) => {
         data: {
           amount,
           socialURLOrBuyMeACoffee,
-          specialMessage : specialMessage || null,
+          specialMessage: specialMessage || null,
           donorId: Number(userId),
           recipientId: Number(redirectId),
         },
@@ -27,10 +25,8 @@ export const postDonation = async (req: Request, res: Response) => {
       res.status(200).json({ succes: true, createdDonation: donation });
     }
   } catch (error) {
-    console.log(error);
-    
     res.status(500).json({ error: "server error" });
-  }finally{
-    prisma.$disconnect()
+  } finally {
+    prisma.$disconnect();
   }
 };
