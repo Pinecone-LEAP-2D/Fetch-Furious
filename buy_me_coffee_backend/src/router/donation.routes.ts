@@ -6,7 +6,7 @@ import { getDontionNotFilter } from "../controller/donation/getDonitionNotFilter
 
 export const DonationRouter = express.Router();
 
-DonationRouter.post("/:redirectId", authenticationJWT, postDonation);
+DonationRouter.post("/:redirectId/:userId", postDonation);
 DonationRouter.get('/:userId', getDontion)
 DonationRouter.get('/all/:userId', getDontionNotFilter)
 

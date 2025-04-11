@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 
 export const getBank = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const userId = req.userid;
     if (userId) {
       const cardNumber = await prisma.bankCard.findFirst({
         where: {

@@ -94,28 +94,48 @@ export const addBackground = async (
 };
 export const sendDonation = async (
   data: z.infer<typeof donationSchema>,
-  recipientId: number
+  recipientId: number,
+  donorId : number | undefined
 ) => {
-  const token = localStorage.getItem("token");
+
   try {
-    await axios.post(
-      `http://localhost:4000/donation/${recipientId}`,
+    const response = await axios.post(
+      `http://localhost:4000/donation/${recipientId}/${donorId}`,
       {
         amount: data.amount,
-        socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
         specialMessage: data.specialMessage,
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
+      },{
+        params : {
+          recipientId, donorId
+        }
       }
+
     );
+    console.log(response);
+    
   } catch (error) {
     console.log(error);
   }
 };
 
+export const getQr = async (
+  data: z.infer<typeof donationSchema>,
+  recipientId: number
+) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:4000/qr/${recipientId}`,
+      {
+        amount: data.amount,
+        socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
+        specialMessage: data.specialMessage,
+      },
+    );
+    return response
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -297,3 +317,17 @@ export const getUserProfile = async () => {
     console.log(error);
   }
 };
+export const getBankCard = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get("http://localhost:4000/bankcard", {
+      headers: {
+        Authorization: token,
+      },
+    });
+    console.log(response , "dwdce");
+    return response
+  } catch (error) {
+    console.log(error);
+  }
+}; 
