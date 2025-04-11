@@ -109,7 +109,7 @@ export default function Home() {
             </SelectContent>
           </Select>
         </div>
-        <p className="text-3xl mx-2 p-2 font-bold">{totalAmount}</p>
+        <p className="text-3xl mx-2 p-2 font-bold">${totalAmount}</p>
       </div>
       <div className="flex justify-between items-center p-2 m-2 w-full">
         <p className="font-bold">Recent transactions</p>
