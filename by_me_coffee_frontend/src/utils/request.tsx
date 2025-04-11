@@ -287,3 +287,23 @@ export const putUser = async (values: z.infer<typeof passwordSchema>) => {
     console.log(error);
   }
 };
+export const getUserProfile = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.warn("No token found in localStorage.");
+    return null;
+  }
+  try {
+    const response = await axios.get(
+      `http://localhost:4000/profile/auth`,
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

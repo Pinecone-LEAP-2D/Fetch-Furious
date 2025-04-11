@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import PageLoading from "@/components/PageLoading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { getManyProfile } from "@/utils/request";
@@ -12,7 +13,7 @@ import { useEffect, useState } from "react";
 const Explore = () => {
   const router = useRouter();
   const [name, setName] = useState("");
-  const [profiles, setProfiles] = useState<Profile[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>();
   const profileExplore = async () => {
     try {
       const res = await getManyProfile(1, name);
@@ -27,6 +28,9 @@ const Explore = () => {
     profileExplore();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name]);
+  if (!profiles) {
+    return <PageLoading/>
+  }
   return (
     <div className="flex p-24 flex-col gap-[32px] w-full h-fit">
       <div className="flex-col gap-[24px]">

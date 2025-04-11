@@ -15,7 +15,7 @@ import { useProfile } from "@/provider/ProfileProvider";
 
 export default function DashboardHeader() {
   const router = useRouter();
-  const { profile } = useProfile();
+  const { profile, setProfile , setUser} = useProfile();
   if (!profile) {
     return 
   }
@@ -23,6 +23,8 @@ export default function DashboardHeader() {
     try {
       await axios.post("/api/auth/sign-out");
       localStorage.removeItem("token");
+      setProfile(null)
+      setUser(false)
       router.push("/sign-in");
     } catch (error) {
       console.log(error);
@@ -31,9 +33,9 @@ export default function DashboardHeader() {
 
   return (
     <div className="w-screen sticky top-0 px-[80px] bg-white z-50 py-2 flex justify-between">
-      <div className="flex gap-3 items-center">
+      <div className="flex gap-3 items-center cursor-pointer" onClick={()=>router.push('/dashboard')}>
         <Coffee />
-        <div className="font-bold text-base">Buy Me Coffe</div>
+        <div className="font-bold text-base">Buy Me Coffee</div>
       </div>
       <div className="flex items-center text-lg font-semibold gap-2">
         <Image

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useProfile } from "@/provider/ProfileProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -21,6 +22,7 @@ const signInSchema = z.object({
 });
 export default function SignInForm() {
     const router = useRouter()
+    const {setUser} = useProfile()
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -36,6 +38,7 @@ export default function SignInForm() {
         password: values.password,
       });
       localStorage.setItem('token', response.data.token)
+      setUser(true)
       router.push('/dashboard')
     } catch (error) {
       console.log(error);

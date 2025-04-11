@@ -4,12 +4,16 @@ import { Coffee } from "lucide-react";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useProfile } from "@/provider/ProfileProvider";
 export default function ProfileHeader(){
     const router = useRouter()
+    const {setProfile, setUser} = useProfile()
     const signOut = async () => {
         try {
           await axios.post("/api/auth/sign-out");
           localStorage.removeItem("token");
+          setProfile(null)
+          setUser(false)
           router.push("/sign-in");
         } catch (error) {
           console.log(error);

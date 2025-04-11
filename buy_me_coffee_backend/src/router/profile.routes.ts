@@ -5,6 +5,7 @@ import { getProfile } from "../controller/profile/get-profile";
 import { getManyProfiles } from "../controller/profile/getManyProfile";
 import { addBackground } from "../controller/profile/addBackground";
 import { putProfile } from "../controller/profile/updated";
+import { getUserProfile } from "../controller/profile/getUserProfile";
 
 export const ProfileRouter = express.Router();
 
@@ -13,3 +14,4 @@ ProfileRouter.get("/user/:userId", authenticationJWT, getProfile);
 ProfileRouter.get("/explore", authenticationJWT, getManyProfiles);
 ProfileRouter.put('/backgorund/:userId', addBackground)
 ProfileRouter.put('/', authenticationJWT, putProfile)
+ProfileRouter.get('/auth', authenticationJWT, getUserProfile)
