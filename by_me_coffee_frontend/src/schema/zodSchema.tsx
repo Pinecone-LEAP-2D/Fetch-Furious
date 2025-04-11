@@ -5,14 +5,39 @@ export const bankCardSchema = z.object({
   firstName: z
     .string()
     .min(1, "First name must match")
-    .min(3, "FirstName must be at least 3 characters"),
+    .min(3, "First name must be at least 3 characters")
+    .trim(),
   lastName: z
     .string()
     .min(1, "Last name must match")
-    .min(3, "LastName must be at least 3 characters"),
-  cardNumber: z.string().min(1, "Invalid card number"),
-  expiryDate: z.string().min(1, "Invalid month"),
-});
+    .min(3, "Last name must be at least 3 characters")
+    .trim(),
+  cardNumber: z
+    .string()
+    .min(1, "Card number is required")
+   ,
+  month: z
+    .string()
+    .min(1, "Expiration month is required")
+    .refine(
+      (month) => {
+        const monthNum = parseInt(month);
+        return !isNaN(monthNum) && monthNum >= 1 && monthNum <= 12;
+      },
+      { message: "Invalid month" }
+    ),
+  year: z
+    .string()
+    .min(1, "Expiration year is required")
+    .refine(
+      (year) => {
+        const yearNum = parseInt(year);
+        const currentYear = new Date().getFullYear();
+        return !isNaN(yearNum) && yearNum >= currentYear && yearNum <= currentYear + 20;
+      },
+      { message: "Invalid year" }
+    ),
+})
 export const profileSchema = z.object({
     avatarImage: z.string().optional(),
     name: z

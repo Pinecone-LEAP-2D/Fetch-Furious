@@ -46,7 +46,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!profile1?.avatarImage) {
+  if (!profile1) {
     return <Loading />;
   }
   return (
