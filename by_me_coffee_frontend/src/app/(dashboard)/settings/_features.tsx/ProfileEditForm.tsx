@@ -113,7 +113,7 @@ export default function ProfileEdit() {
                     <Input
                       {...field}
                       placeholder="Enter name"
-                      className="flex px-3 py-4 items-center"
+                      className="flex px-3 py-4 w-[460px] items-center"
                     />
                   </FormControl>
                 </FormItem>
@@ -130,7 +130,7 @@ export default function ProfileEdit() {
                     <Input
                       {...field}
                       placeholder="Write about yourself here"
-                      className="flex px-3 py-4 items-center"
+                      className="flex px-3 py-4 w-[460px] items-center"
                     />
                   </FormControl>
                 </FormItem>
@@ -148,7 +148,7 @@ export default function ProfileEdit() {
                     <Input
                       {...field}
                       placeholder="https://"
-                      className="flex px-3 py-4 items-center"
+                      className="flex px-3 w-[460px] py-4 items-center"
                     />
                   </FormControl>
                 </FormItem>
@@ -156,7 +156,7 @@ export default function ProfileEdit() {
             />
             <Button
               type="submit"
-              className="flex px-4 py-4 justify-center items-center gap-[8px]"
+              className="flex px-4 py-4 justify-center items-center gap-[8px] w-[460px]"
             >
               Save Changes
             </Button>
