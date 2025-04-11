@@ -63,10 +63,13 @@ export default function Home() {
   if (!profile) {
     return <PageLoading/>;
   }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
   
   const copylink = () => {
-    const link = `http://localhost:3001/viewpage/${userID}`;
+    const link = `http://localhost:3000/viewpage/${userID}`;
     navigator.clipboard.writeText(link)
       .then(() => toast('Successfully copied links'))
       .catch((err) => {

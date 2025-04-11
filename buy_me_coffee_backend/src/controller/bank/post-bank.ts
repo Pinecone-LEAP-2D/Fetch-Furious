@@ -18,13 +18,18 @@ export const postBank = async (req: Request, res: Response) => {
       if (data) {
         const { cardNumber, country, lastName, firstName, expiryDate } = data;
         const id = parseInt(userId);
+        const expiry = expiryDate.split("/");
+        const month = parseInt(expiry[0]);
+        const year = parseInt(
+          expiry[1].length === 2 ? `20${expiry[1]}` : expiry[1]
+        );
         const newBank = await prisma.bankCard.create({
           data: {
             cardNumber,
             country,
             lastName,
             firstName,
-            expiryDate: new Date(expiryDate).toISOString(),
+            expiryDate: new Date(year, month, 1).toISOString(),
             user: {
               connect: {
                 id
