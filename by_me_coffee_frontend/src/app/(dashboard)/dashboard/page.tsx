@@ -16,6 +16,8 @@ import { Copy } from "lucide-react";
 import { getDonationWithFilter } from "@/utils/request";
 import { useEffect, useState } from "react";
 import { Profile } from "@prisma/client";
+import PageLoading from "@/components/PageLoading";
+import { useRouter } from "next/navigation";
 type Donation = {
   donor: { id: number; profile: Profile };
   amount: number;
@@ -26,6 +28,7 @@ type Donation = {
 };
 export default function Home() {
   const amounts = [1, 3, 5, 10, 15, 20];
+  const router = useRouter()
   const [amount, setAmount] = useState<number | null>(null);
   const [donations, setDonation] = useState<Donation[]>();
   const [totalAmount, setTotalAmount] = useState(0);
@@ -55,11 +58,11 @@ export default function Home() {
     setDateFilter(Number(value));
   };
   if (!profile) {
-    return <div>loading</div>;
+    return <PageLoading/>;
   }
   return (
-    <div className="max-w-[800px] rounded-xl">
-      <div className="flex flex-col  max-w-[800px] border p-4 m-2 rounded-sm">
+    <div className="w-full rounded-xl">
+      <div className="flex flex-col  w-full border p-4 m-2 rounded-sm">
         <div className="flex justify-between">
           <div className="flex items-center ">
             <img
@@ -116,7 +119,7 @@ export default function Home() {
         </div>
       </div>
       {donations?.map((donation, index) => (
-        <div key={index} className=" border p-5 max-w-[800px] rounded-sm">
+        <div key={index} className=" border p-5 w-full rounded-sm">
           <div className="flex items-center  justify-between">
             <div className="flex items-center">
               <img
@@ -128,8 +131,10 @@ export default function Home() {
                 }
               />
               <div className=" px-2">
-                <p>Guest{donation.donor.profile.name}</p>
-                <p>{donation.socialURLOrBuyMeACoffee}instagramm.com/welesley</p>
+                <div className="flex gap-2">Guest
+                  <div onClick={()=>router.push(`/viewpage/${donation.donor.id}`)} className="font-bold cursor-pointer hover:underline"> {donation.donor.profile.name}</div>
+                </div>
+                <p className="cursor-pointer hover:underline">{donation.socialURLOrBuyMeACoffee}</p>
               </div>
             </div>
             <div>

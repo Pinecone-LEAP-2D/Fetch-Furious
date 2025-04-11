@@ -9,51 +9,59 @@ import {
 } from "react";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jsonwebtoken";
-import { addBackground, getProfile } from "@/utils/request";
+import { addBackground, getUserProfile } from "@/utils/request";
 
 import { useRouter } from "next/navigation";
 import { Profile } from "@prisma/client";
 
 type ProfileContext = {
-  profile: Profile | undefined;
+  profile: Profile | null;
   addBackgroundImage : (image:string)=>void
   userID : string
   loading :boolean
+  setUser : (user : boolean) => void
+  setProfile : (profile : Profile | null) => void
 };
 const ProfileContex = createContext<ProfileContext | null>(null);
 
 export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [profile, setProfile] = useState<Profile>();
+  const [user, setUser] = useState(false)
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [userID, setUserID] = useState("");
   const fetchProfile = async () => {
     setLoading(true);
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    const decode = jwtDecode<JwtPayload>(token);
     try {
-      const response = await getProfile(decode.userId);
+      const response = await getUserProfile();
       if (!response?.data.result) {
         router.push("/profile");
         return;
       }
-      await setProfile(response.data.result);
-      setUserID(decode.userId);
+      setProfile(response.data.result);
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
+  const getUserID = () =>{
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    const decode = jwtDecode<JwtPayload>(token);
+    console.log(decode.userId);
+    setUserID(decode.userId);
+  }
   useEffect(() => {
     fetchProfile();
+    getUserID()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
   const addBackgroundImage = async (image: string) => {
     try {
       setLoading(true);
       await addBackground(image, userID);
+      fetchProfile()
     } catch (error) {
       console.log(error);
     } finally {
@@ -61,7 +69,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   return (
-    <ProfileContex.Provider value={{ profile, addBackgroundImage, userID, loading }}>
+    <ProfileContex.Provider value={{ profile, addBackgroundImage, userID, loading , setUser, setProfile}}>
       {children}
     </ProfileContex.Provider>
   );

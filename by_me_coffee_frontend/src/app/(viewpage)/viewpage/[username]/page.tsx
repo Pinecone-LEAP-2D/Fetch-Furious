@@ -4,7 +4,7 @@
 import { getDonation, getProfile } from "@/utils/request";
 import { Profile } from "@prisma/client";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ImageUpload from "../_features/ImageUpload";
 import DonationZone from "../_features/DonaitionZone";
@@ -21,7 +21,8 @@ type Donation = {
 };
 export default function Home() {
   const { username } = useParams();
-const {profile} = useProfile()
+  const router = useRouter()
+  const { profile } = useProfile();
   const [profile1, setProfile] = useState<Profile>();
   const [donations, sendDonation] = useState<Donation[]>();
   const fetchProfile = async () => {
@@ -60,9 +61,7 @@ const {profile} = useProfile()
             />
           </div>
         ) : (
-          <>
-            {profile1.userId === profile?.userId && (<ImageUpload />)}
-          </>
+          <>{profile1.userId === profile?.userId && <ImageUpload />}</>
         )}
       </div>
       <div className="flex gap-6 w-[90%] absolute z-10 top-[400px]">
@@ -81,7 +80,7 @@ const {profile} = useProfile()
                 />
                 <div className="text-xl font-semibold">{profile1.name}</div>
               </div>
-              {profile1.userId === profile?.userId && (<EditProfile />)}
+              {profile1.userId === profile?.userId && <EditProfile />}
             </div>
             <div className="flex flex-col gap-6">
               <p className="font-semibold text-lg">About {profile1.name}</p>
@@ -107,9 +106,9 @@ const {profile} = useProfile()
                     className="w-8 h-8 rounded-full"
                   />
                   <div className="flex flex-col gap-3">
-                    <div className="font-semibold text-lg">
-                      {donation.donor.profile.name} bought ${donation.amount}{" "}
-                      coffee
+                    <div className="text-lg flex gap-2">
+                      <div onClick={()=>router.push(`/viewpage/${donation.donor.id}`)} className="font-bold cursor-pointer hover:text-blue-600 hover:underline"> {donation.donor.profile.name} </div>
+                      bought ${donation.amount} coffee
                     </div>
                     {donation.specialMessage && (
                       <div>{donation.specialMessage}</div>
