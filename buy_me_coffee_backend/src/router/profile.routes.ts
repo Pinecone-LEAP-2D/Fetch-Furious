@@ -10,7 +10,7 @@ import { getUserProfile } from "../controller/profile/getUserProfile";
 export const ProfileRouter = express.Router();
 
 ProfileRouter.post("/", authenticationJWT, postProfile);
-ProfileRouter.get("/user/:userId", authenticationJWT, getProfile);
+ProfileRouter.get("/user/:userId", getProfile);
 ProfileRouter.get("/explore", authenticationJWT, getManyProfiles);
 ProfileRouter.put('/backgorund/:userId', addBackground)
 ProfileRouter.put('/', authenticationJWT, putProfile)

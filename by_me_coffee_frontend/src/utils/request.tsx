@@ -5,8 +5,8 @@ import { addDays } from "date-fns";
 import axios from "axios";
 import { z } from "zod";
 export const successMessageSchema = z.object({
-  successMessage : z.string()
-})
+  successMessage: z.string(),
+});
 export const postProfile = async (
   values: z.infer<typeof profileSchema>,
   image: string
@@ -37,20 +37,11 @@ export const postProfile = async (
   }
 };
 export const getProfile = async (userId: string | string[]) => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    console.warn("No token found in localStorage.");
-    return null;
-  }
   try {
+    console.log(userId);
+    
     const response = await axios.get(
-      `http://localhost:4000/profile/user/${userId}`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
+      `http://localhost:4000/profile/user/${userId}`,);
     return response;
   } catch (error) {
     console.log(error);
@@ -140,7 +131,7 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
         firstName: value.firstName,
         lastName: value.lastName,
         cardNumber: value.cardNumber,
-        expiryDate: value.expiryDate,
+        expiryDate: `${value.month}/${value.year}`,
       },
       {
         headers: {
@@ -192,7 +183,7 @@ export const putProfile = async (
   if (!token) {
     console.warn("No token found in localStorage.");
     return null;
-  }  
+  }
   try {
     const response = await axios.put(
       "http://localhost:4000/profile",
@@ -216,7 +207,7 @@ export const putProfile = async (
 export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   const token = localStorage.getItem("token");
   if (!token) {
-    console.warn("No token found in localStorage.");
+    console.log("No token found in localStorage.");
     return null;
   }
 
@@ -228,7 +219,7 @@ export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
         firstName: value.firstName,
         lastName: value.lastName,
         cardNumber: value.cardNumber,
-        expiryDate: value.expiryDate,
+        expiryDate: `${value.month}/${value.year}`,
       },
       {
         headers: {
@@ -241,7 +232,9 @@ export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
     console.log(error);
   }
 };
-export const putSuccess = async (values: z.infer<typeof successMessageSchema>) => {
+export const putSuccess = async (
+  values: z.infer<typeof successMessageSchema>
+) => {
   const token = localStorage.getItem("token");
   if (!token) {
     console.warn("No token found in localStorage.");
@@ -294,14 +287,11 @@ export const getUserProfile = async () => {
     return null;
   }
   try {
-    const response = await axios.get(
-      `http://localhost:4000/profile/auth`,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
+    const response = await axios.get(`http://localhost:4000/profile/auth`, {
+      headers: {
+        Authorization: token,
+      },
+    });
     return response;
   } catch (error) {
     console.log(error);
