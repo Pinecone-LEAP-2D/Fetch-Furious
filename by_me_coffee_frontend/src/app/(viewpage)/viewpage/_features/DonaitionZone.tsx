@@ -9,10 +9,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useProfile } from "@/provider/ProfileProvider";
-import { sendDonation } from "@/utils/request";
+import { getQr } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Profile } from "@prisma/client";
 import { Coffee } from "lucide-react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 export const donationSchema = z.object({
@@ -20,8 +21,15 @@ export const donationSchema = z.object({
   specialMessage: z.string().optional(),
   amount: z.number(),
 });
-const DonationZone = ({ profiles, getRecivedDonnation }: { profiles: Profile, getRecivedDonnation: ()=>void }) => {
+const DonationZone = ({
+  profiles,
+  getRecivedDonnation,
+}: {
+  profiles: Profile;
+  getRecivedDonnation: () => void;
+}) => {
   const { profile } = useProfile();
+  const [qr, setqr] = useState();
   const amounts = [1, 2, 3, 5, 10, 15];
   const form = useForm<z.infer<typeof donationSchema>>({
     resolver: zodResolver(donationSchema),
@@ -33,25 +41,32 @@ const DonationZone = ({ profiles, getRecivedDonnation }: { profiles: Profile, ge
       specialMessage: "",
     },
   });
-  const onSubmit =async (data: z.infer<typeof donationSchema>) => {
+  const onSubmit = async (data: z.infer<typeof donationSchema>) => {
     if (profile?.userId === profiles.userId) {
-       return
+      return;
     }
     if (data.amount === 0) {
-      return
+      return;
     }
     try {
-        await sendDonation(data, profiles.userId)
-        getRecivedDonnation()
+      const response = await getQr(data, profiles.userId);
+      console.log(response);
+      setqr(response?.data.data);
+      getRecivedDonnation();
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
     }
   };
   return (
     <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex h-fit flex-col gap-8 w-full border rounded-lg bg-[#FFFFFF] p-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex h-fit flex-col gap-8 w-full border rounded-lg bg-[#FFFFFF] p-6"
+      >
         <div className="flex flex-col gap-6">
+          <div className="z-50 w-96 h-96">
+           {qr &&( <div dangerouslySetInnerHTML={{ __html: qr }} />)}
+          </div>
           <div className="text-2xl font-semibold">
             Buy {profiles?.name} a Coffee
           </div>
@@ -68,7 +83,10 @@ const DonationZone = ({ profiles, getRecivedDonnation }: { profiles: Profile, ge
                       onClick={() => form.setValue("amount", amount)}
                       variant="secondary"
                       key={index}
-                      className={`flex py-2 px-4 text-[14px] ${form.getValues('amount') === amount && "border-[#18181B] border-2"} `}
+                      className={`flex py-2 px-4 text-[14px] ${
+                        form.getValues("amount") === amount &&
+                        "border-[#18181B] border-2"
+                      } `}
                     >
                       <Coffee />${amount}
                     </Button>

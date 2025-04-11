@@ -4,20 +4,24 @@ import { prisma } from "../../lib/prisma";
 const donationSchema = z.object({
   amount: z.number(),
   specialMessage: z.string().optional(),
-  socialURLOrBuyMeACoffee: z.string().min(1),
 });
 export const postDonation = async (req: Request, res: Response) => {
   try {
-    const { redirectId } = req.params;
-    const userId = req.userid;
+    const redirectId = req.query.recipientId;
+    const userId = req.query.donorId;
     const data = donationSchema.parse(req.body);
     if (data && userId && redirectId) {
-      const { amount, specialMessage, socialURLOrBuyMeACoffee } = data;
+      const { amount, specialMessage } = data;
+      const profile = await prisma.profile.findUnique({
+        where : {
+          userId : Number(userId)
+        }
+      })
       const donation = await prisma.donation.create({
         data: {
           amount,
-          socialURLOrBuyMeACoffee,
-          specialMessage: specialMessage || null,
+          socialURLOrBuyMeACoffee :profile?.socialMediaURL || null,
+          specialMessage,
           donorId: Number(userId),
           recipientId: Number(redirectId),
         },

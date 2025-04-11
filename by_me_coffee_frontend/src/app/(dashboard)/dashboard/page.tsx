@@ -63,7 +63,7 @@ export default function Home() {
   if (!profile) {
     return <PageLoading/>;
   }
-<<<<<<< Updated upstream
+
   
   const copylink = () => {
     const link = `http://localhost:3001/viewpage/${userID}`;
@@ -74,9 +74,7 @@ export default function Home() {
         toast("Failed to copy the link.");
       });
   };
-=======
 
->>>>>>> Stashed changes
   return (
     <div className="w-full rounded-xl">
       <div className="flex flex-col  w-full border p-4 m-2 rounded-sm">
