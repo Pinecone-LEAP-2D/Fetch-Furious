@@ -17,7 +17,9 @@ import { months } from "@/lib/localFile";
 import { bankCardSchema } from "@/schema/zodSchema";
 import { putBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle2Icon } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export default function BankCardEdit() {
@@ -36,10 +38,11 @@ export default function BankCardEdit() {
   });
   const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
     console.log(value);
-    
     try {
       const res = await putBankCard(value);
-      console.log(res);
+      if (res){
+        toast(<div className="flex"> Bank card updated <CheckCircle2Icon className="ml-10" /></div>)
+      }
     } catch (error) {
       console.log(error);
     }
