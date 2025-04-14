@@ -17,8 +17,6 @@ const Explore = () => {
   const profileExplore = async () => {
     try {
       const res = await getManyProfile(1, name);
-      console.log(res);
-
       setProfiles(res.results);
     } catch (error) {
       console.log(error);
