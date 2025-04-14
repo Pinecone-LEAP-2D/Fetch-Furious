@@ -23,13 +23,11 @@ export default function SignUpForm() {
 
   const signUp = async (values: z.infer<typeof signUpSchema>) => {
     try {
-      const response = await axios.post("api/auth/sign-up", {
+      await axios.post("api/auth/sign-up", {
         email: values.email,
         password: values.password,
         username: values.username,
       });
-
-      console.log(response);
       router.push("/sign-in");
     } catch (error) {
       console.log(error);

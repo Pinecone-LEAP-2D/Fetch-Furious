@@ -53,7 +53,6 @@ const DonationZone = ({
     }
     try {
       const response = await getQr(data, profiles.userId);
-      console.log(response);
       setOpen(true)
       setqr(response?.data.data);
       setLink(response?.data.link)

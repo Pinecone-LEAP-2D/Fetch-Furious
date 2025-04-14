@@ -35,9 +35,7 @@ export default function BankCardEdit() {
       month: "",
     },
   });
-  const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
-    console.log(value);
-    
+  const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {    
     try {
       const res = await addBankCard(value);
       console.log(res);

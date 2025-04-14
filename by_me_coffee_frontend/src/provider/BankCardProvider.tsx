@@ -24,8 +24,6 @@ export const BankCardProvider = ({ children }: { children: ReactNode }) => {
           Authorization: token,
         },
       });
-      console.log(response , "dwdce");
-
       setBankCard(response.data);
     } catch (error) {
       console.log(error);
@@ -33,9 +31,7 @@ export const BankCardProvider = ({ children }: { children: ReactNode }) => {
   };
   useEffect(() => {
     getBankCard();
-  }, []);
-  console.log(bankcard);
-  
+  }, []);  
   return (
     <BankCardContext.Provider value={{ bankcard }}>
       {children}
