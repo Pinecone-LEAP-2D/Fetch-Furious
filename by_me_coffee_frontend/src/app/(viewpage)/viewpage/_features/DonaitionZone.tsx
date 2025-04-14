@@ -16,6 +16,7 @@ import { Coffee } from "lucide-react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
+import { DialogQr } from "./QrDialog";
 export const donationSchema = z.object({
   socialURLOrBuyMeACoffee: z.string().min(1, "please enter your social URL"),
   specialMessage: z.string().optional(),
@@ -29,7 +30,9 @@ const DonationZone = ({
   getRecivedDonnation: () => void;
 }) => {
   const { profile } = useProfile();
-  const [qr, setqr] = useState();
+  const [open, setOpen] = useState(false)
+  const [qr, setqr] = useState<string | null>(null);
+  const [link, setLink] = useState('')
   const amounts = [1, 2, 3, 5, 10, 15];
   const form = useForm<z.infer<typeof donationSchema>>({
     resolver: zodResolver(donationSchema),
@@ -51,7 +54,9 @@ const DonationZone = ({
     try {
       const response = await getQr(data, profiles.userId);
       console.log(response);
+      setOpen(true)
       setqr(response?.data.data);
+      setLink(response?.data.link)
       getRecivedDonnation();
     } catch (error) {
       console.log(error);
@@ -59,14 +64,12 @@ const DonationZone = ({
   };
   return (
     <FormProvider {...form}>
+      <DialogQr qr={qr} open={open} setOpen={setOpen} link={link}/>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex h-fit flex-col gap-8 w-full border rounded-lg bg-[#FFFFFF] p-6"
       >
         <div className="flex flex-col gap-6">
-          <div className="z-50 w-96 h-96">
-           {qr &&( <div dangerouslySetInnerHTML={{ __html: qr }} />)}
-          </div>
           <div className="text-2xl font-semibold">
             Buy {profiles?.name} a Coffee
           </div>

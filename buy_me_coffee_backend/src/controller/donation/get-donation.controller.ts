@@ -11,7 +11,6 @@ export const getDontion = async (req: Request, res: Response):Promise<void> => {
     const { amount, date } = req.query;
 
     if (!userId) {
-      return 
       res.status(400).send({ error: "User ID is required" });
     }
 

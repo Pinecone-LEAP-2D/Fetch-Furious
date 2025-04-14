@@ -9,6 +9,8 @@ const donationSchema = z.object({
 });
 export const generateQrCode = async (req: Request, res: Response) => {
   const data = donationSchema.parse(req.body);
+  console.log(req.body);
+  
   const userId = req.params.userId;
   try {
     if (data) {
@@ -18,9 +20,11 @@ export const generateQrCode = async (req: Request, res: Response) => {
           socialMediaURL: socialURLOrBuyMeACoffee,
         },
       });
-      const qrData = `http://localhost:3000/payment/?donorid=${user?.id}&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}`;
+      console.log(user);
+      
+      const qrData = `http://localhost:3000/payment/?donorid=${user?.userId}&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}`;
       const qrCode = qr.imageSync(qrData, { type: 'svg' });
-      res.status(200).json({ data: qrCode });
+      res.status(200).json({ data: qrCode, link : qrData });
     } else {
       res.status(405).json({ error: "type error" });
     }
