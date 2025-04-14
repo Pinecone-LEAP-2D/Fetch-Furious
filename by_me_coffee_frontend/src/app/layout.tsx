@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import { UserProvider } from "@/provider/UserProvider";
 import { ProfileProvider } from "@/provider/ProfileProvider";
 import { BankCardProvider } from "@/provider/BankCardProvider";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,10 @@ export default function RootLayout({
         <ThemeProvider>
           <UserProvider>
             <ProfileProvider>
-              <BankCardProvider>{children}</BankCardProvider>
+              <BankCardProvider>
+                {children}
+                <Toaster />
+              </BankCardProvider>
             </ProfileProvider>
           </UserProvider>
         </ThemeProvider>

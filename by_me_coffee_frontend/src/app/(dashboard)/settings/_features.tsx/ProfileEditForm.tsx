@@ -9,9 +9,10 @@ import { useProfile } from "@/provider/ProfileProvider";
 import { profileSchema } from "@/schema/zodSchema";
 import { putProfile } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera } from "lucide-react";
+import { Camera, CheckCircle2Icon } from "lucide-react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export default function ProfileEdit() {
@@ -57,7 +58,10 @@ export default function ProfileEdit() {
         throw new Error("Upload failed");
       }
       const result = await response.json();
-      await putProfile(value, result.secure_url);
+      const response1 =  await putProfile(value, result.secure_url);
+      if (response1) {
+        toast(<div className="flex">profile updated <CheckCircle2Icon className="ml-10" /></div>)
+      }
     } catch (error) {
       console.error(error);
     }

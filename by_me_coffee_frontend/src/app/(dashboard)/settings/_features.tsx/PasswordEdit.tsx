@@ -5,7 +5,9 @@ import { Label } from "@/components/ui/label";
 import { passwordSchema } from "@/schema/zodSchema";
 import { putUser } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircle2Icon } from "lucide-react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 export default function PasswordEditForm() {
@@ -18,10 +20,10 @@ export default function PasswordEditForm() {
   });
   const updatedUser = async (value: z.infer<typeof passwordSchema>) => {
     try {
-      console.log(value);
-
       const res = await putUser(value);
-      console.log(res);
+      if (res) {
+        toast(<div className="flex">password changed <CheckCircle2Icon className="ml-5" stroke="green"/></div>)
+      }
     } catch (error) {
       console.log(error);
     }

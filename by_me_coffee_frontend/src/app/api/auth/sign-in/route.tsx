@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import jwt from "jsonwebtoken";
 
+
 export const signInSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           succes: false,
-          message: "user not found",
+          error: "user not found",
         },
         { status: 400 }
       );
@@ -42,7 +43,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           succes: false,
-          message: "wrong password or email",
+          error: "wrong password or email",
         },
         { status: 405 }
       );
