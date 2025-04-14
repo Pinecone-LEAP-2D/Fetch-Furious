@@ -4,27 +4,20 @@
 import { getDonation, getProfile } from "@/utils/request";
 import { Profile } from "@prisma/client";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ImageUpload from "../_features/ImageUpload";
 import DonationZone from "../_features/DonaitionZone";
 import { EditProfile } from "../_features/EditProfile";
 import Loading from "@/components/Loading";
 import { useProfile } from "@/provider/ProfileProvider";
-type Donation = {
-  donor: { id: number; profile: Profile };
-  amount: number;
-  createdAt: Date;
-  recipientId: null;
-  socialURLOrBuyMeACoffee: string;
-  specialMessage: string;
-};
+import Donar, { DonationType } from "../_components/Donar";
+
 export default function Home() {
   const { username } = useParams();
-  const router = useRouter()
   const { profile } = useProfile();
   const [profile1, setProfile] = useState<Profile>();
-  const [donations, sendDonation] = useState<Donation[]>();
+  const [donations, sendDonation] = useState<DonationType[]>();
   const fetchProfile = async () => {
     try {
       if (!username) return;
@@ -94,27 +87,8 @@ export default function Home() {
           <div className="p-6 border rounded-lg flex flex-col gap-4">
             <div className="text-lg font-semibold">Recent supporters</div>
             <div className="h-[250px] w-full overflow-scroll p-6 flex gap-4 flex-col border rounded-lg">
-              {donations?.map((donation: Donation, index) => (
-                <div key={index} className="w-full flex gap-3">
-                  <img
-                    src={
-                      donation.donor.profile.avatarImage
-                        ? donation.donor.profile.avatarImage
-                        : "/next.svg"
-                    }
-                    alt="avatar image"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <div className="flex flex-col gap-3">
-                    <div className="text-lg flex gap-2">
-                      <div onClick={()=>router.push(`/viewpage/${donation.donor.id}`)} className="font-bold cursor-pointer hover:text-blue-600 hover:underline"> {donation.donor.profile.name} </div>
-                      bought ${donation.amount} coffee
-                    </div>
-                    {donation.specialMessage && (
-                      <div>{donation.specialMessage}</div>
-                    )}
-                  </div>
-                </div>
+              {donations?.map((donation: DonationType, index) => (
+                <Donar donation={donation} key={index} />
               ))}
             </div>
           </div>

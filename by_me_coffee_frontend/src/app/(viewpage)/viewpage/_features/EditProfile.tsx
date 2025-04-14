@@ -1,7 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -28,6 +26,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { useProfile } from "@/provider/ProfileProvider";
 import { putProfile } from "@/utils/request";
+import ImagePreview from "../_components/imagePreview";
 
 const profileSchema = z.object({
   avatarImage: z.string().optional(),
@@ -41,9 +40,6 @@ const profileSchema = z.object({
 export function EditProfile() {
   const { profile } = useProfile();
   const [image, setImage] = useState<File>();
-  const [preview, setPreview] = useState<string | undefined | null>(
-    profile?.avatarImage
-  );
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -53,14 +49,6 @@ export function EditProfile() {
       socialMediaURL: profile?.socialMediaURL ? profile.socialMediaURL : "",
     },
   });
-  const generatePreview = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.type === "file" && e.target.files) {
-      const file = e.target.files[0];
-      const objecturl = URL.createObjectURL(file);
-      setPreview(objecturl);
-      setImage(file);
-    }
-  };
   const editProfile = async (value: z.infer<typeof profileSchema>) => {
     try {
       if (!image) return;
@@ -108,30 +96,7 @@ export function EditProfile() {
               control={form.control}
               name="avatarImage"
               render={() => (
-                <FormItem>
-                  <FormControl>
-                    <Label className="flex flex-col gap-[12px] items-center">
-                      <p className="font-semibold text-sm">Add photo</p>
-                      <div className="flex w-[160px] h-[160px] justify-center items-center bg-[#E4E4E7] border-dashed border rounded-full">
-                        {preview ? (
-                          <img
-                            src={preview}
-                            alt="Profile preview"
-                            className="w-full h-full object-cover rounded-full"
-                          />
-                        ) : (
-                          <Camera type="file" />
-                        )}
-                      </div>
-                      <Input
-                        className="hidden"
-                        type="file"
-                        onChange={generatePreview}
-                      />
-                    </Label>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+                <ImagePreview setImage={setImage} profile={profile} />
               )}
             />
             <div className="flex flex-col gap-[12px]">

@@ -1,29 +1,25 @@
 "use client";
 
+import SelectCountry from "@/components/SelcectCountry";
+import SelectMonth from "@/components/SelectMonth";
+import SelectYear from "@/components/SelectYear";
 import { Button } from "@/components/ui/button";
-import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { months } from "@/lib/localFile";
 import { bankCardSchema } from "@/schema/zodSchema";
-import { addBankCard} from "@/utils/request";
+import { addBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
 export default function BankCardEdit() {
-  const now = new Date().getUTCFullYear();
-  const years = Array.from({ length: 31 }, (_, idx) => now + idx);
   const form = useForm<z.infer<typeof bankCardSchema>>({
     resolver: zodResolver(bankCardSchema),
     defaultValues: {
@@ -35,10 +31,10 @@ export default function BankCardEdit() {
       month: "",
     },
   });
-  const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {    
+  const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
+
     try {
-      const res = await addBankCard(value);
-      console.log(res);
+      await addBankCard(value);
     } catch (error) {
       console.log(error);
     }
@@ -58,25 +54,11 @@ export default function BankCardEdit() {
             render={({ field }) => (
               <FormItem>
                 <Label className="font-semibold text-sm">Select country</Label>
-                <Select
-                  defaultValue={field.value}
+                <SelectCountry
                   onValueChange={field.onChange}
-                >
-                  <SelectTrigger className="w-[460px]">
-                    <SelectValue placeholder="Select a Country" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Country</SelectLabel>
-                      <SelectItem value="America">🇺🇸America</SelectItem>
-                      <SelectItem value="China">🇨🇳China</SelectItem>
-                      <SelectItem value="Russia">🇷🇺Russia</SelectItem>
-                      <SelectItem value="Thailand">🇹🇭Thailand</SelectItem>
-                      <SelectItem value="Mongolia">🇲🇳Mongolia</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <FormMessage/>
+                  defaultValue={field.value}
+                />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -94,7 +76,7 @@ export default function BankCardEdit() {
                       placeholder="Enter lastName"
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -111,14 +93,14 @@ export default function BankCardEdit() {
                       placeholder="Enter lastName"
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
           </div>
           <FormField
             control={form.control}
-            name='cardNumber'
+            name="cardNumber"
             render={({ field }) => (
               <FormItem>
                 <Label className="font-semibold text-sm">
@@ -131,7 +113,7 @@ export default function BankCardEdit() {
                     placeholder="XXXX-XXXX-XXXX-XXXX"
                   />
                 </FormControl>
-                <FormMessage/>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -142,29 +124,12 @@ export default function BankCardEdit() {
                 name="month"
                 render={({ field }) => (
                   <FormItem>
-                    <Label className="font-semibold text-sm">Expires</Label>
-                    <Select
+                    <Label className="font-semibold text-sm">Month</Label>
+                    <SelectMonth
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-[130px]">
-                        <SelectValue placeholder="Select a Month" />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[300px]">
-                        <SelectGroup>
-                          <SelectLabel>Month</SelectLabel>
-                          {months.map((month, index) => (
-                            <SelectItem
-                              key={index}
-                              value={(index + 1).toString()}
-                            >
-                              {month}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage/>
+                    />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -175,25 +140,11 @@ export default function BankCardEdit() {
               render={({ field }) => (
                 <FormItem>
                   <Label className="font-semibold text-sm">Year</Label>
-                  <Select
+                  <SelectYear
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                  >
-                    <SelectTrigger className="w-[130px]">
-                      <SelectValue placeholder="Select a Month" />
-                    </SelectTrigger>
-                    <SelectContent className="max-h-[300px]">
-                      <SelectGroup>
-                        <SelectLabel>Month</SelectLabel>
-                        {years.map((year, index) => (
-                          <SelectItem key={index} value={year.toString()}>
-                            {year}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage/>
+                  />
+                  <FormMessage />
                 </FormItem>
               )}
             />

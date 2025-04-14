@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -9,18 +8,16 @@ import { useProfile } from "@/provider/ProfileProvider";
 import { profileSchema } from "@/schema/zodSchema";
 import { putProfile } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Camera, CheckCircle2Icon } from "lucide-react";
+import { CheckCircle2Icon } from "lucide-react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import ImagePreview from "../_components/imagePreview";
 
 export default function ProfileEdit() {
   const { profile } = useProfile();
   const [image, setImage] = useState<File>();
-  const [preview, setPreview] = useState<string | undefined | null>(
-    profile?.avatarImage
-  );
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -30,15 +27,9 @@ export default function ProfileEdit() {
       socialMediaURL: profile?.socialMediaURL ? profile.socialMediaURL : "",
     },
   });
-  const generatePreview = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.type === "file" && e.target.files) {
-      const file = e.target.files[0];
-      const objecturl = URL.createObjectURL(file);
-      setPreview(objecturl);
-      setImage(file);
-    }
-  };
-  const editProfile = async (value: z.infer<typeof profileSchema>) => {    
+  const editProfile = async (value: z.infer<typeof profileSchema>) => {
+    console.log(value);
+    
     try {
       if (!image) return;
       const formData = new FormData();
@@ -80,29 +71,7 @@ export default function ProfileEdit() {
               control={form.control}
               name="avatarImage"
               render={({}) => (
-                <FormItem className="flex flex-col gap-[12px]">
-                  <Label>
-                    Add photo
-                    <div className="flex w-[160px] h-[160px] justify-center items-center bg-[#E4E4E7] border-dashed border rounded-full">
-                      {preview ? (
-                        <img
-                          src={preview}
-                          alt="Profile preview"
-                          className="w-full h-full object-cover rounded-full"
-                        />
-                      ) : (
-                        <Camera type="file" />
-                      )}
-                    </div>
-                    <FormControl>
-                      <Input
-                        className="hidden"
-                        type="file"
-                        onChange={generatePreview}
-                      />
-                    </FormControl>
-                  </Label>
-                </FormItem>
+                <ImagePreview setImage={setImage} profile={profile}/>
               )}
             />
             <FormField
