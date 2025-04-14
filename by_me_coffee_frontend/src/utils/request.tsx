@@ -131,6 +131,8 @@ export const getQr = async (
         specialMessage: data.specialMessage,
       },
     );
+    console.log(response);
+    
     return response
   } catch (error) {
     console.log(error);
