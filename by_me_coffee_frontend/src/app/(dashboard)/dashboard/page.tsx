@@ -63,11 +63,6 @@ export default function Home() {
   if (!profile) {
     return <PageLoading/>;
   }
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-  
   const copylink = () => {
     const link = `http://localhost:3000/viewpage/${userID}`;
     navigator.clipboard.writeText(link)
