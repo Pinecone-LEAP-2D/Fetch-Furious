@@ -18,7 +18,6 @@ import { bankCardSchema } from "@/schema/zodSchema";
 import { putBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import { z } from "zod";
 
 export default function BankCardEdit() {
@@ -45,7 +44,7 @@ export default function BankCardEdit() {
       console.log(error);
     }
   };
-  const notify = () => toast("Success Pay");
+
   return (
     <FormProvider {...form}>
       <form
@@ -209,7 +208,7 @@ export default function BankCardEdit() {
           </div>
           <Button
             className="flex h-[40px] px-4 py-4 justify-center items-center gap-[8px]"
-            onClick={() => notify}
+            type="submit"
           >
             Save Changes
           </Button>

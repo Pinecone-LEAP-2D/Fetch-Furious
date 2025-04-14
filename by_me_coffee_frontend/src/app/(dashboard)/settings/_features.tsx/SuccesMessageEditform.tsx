@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
-import { toast } from "react-toastify";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
 export default function SuccessEdit() {
   const form = useForm<z.infer<typeof successMessageSchema>>({
     resolver: zodResolver(successMessageSchema),
@@ -21,26 +21,29 @@ export default function SuccessEdit() {
       console.log(error);
     }
   };
-  const notify = () => toast("Success Message");
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(updatedSucess)}>
         <div className="flex p-6 flex-col gap-[24px] border rounded-xl mt-[20px]">
           <p className="font-bold text-base">Success page</p>
-          <div className="flex flex-col gap-[12px]">
-            <div className="flex flex-col gap-[8px]">
+          <FormField control={form.control} name="successMessage" render={({field}) => (
+            <div className="flex flex-col gap-[12px]">
+            <FormItem className="flex flex-col gap-[8px]">
               <Label className="font-semibold text-sm">
                 Confirmation message
               </Label>
+              <FormControl>
               <Input
+                {...field}
                 className="flex h-[40px] px-3 py-10 items-center "
                 placeholder="Enter message"
               />
-            </div>
-          </div>
+              </FormControl>
+            </FormItem>
+          </div> 
+          )}/>
           <Button
-            className="flex h-[40px] px-4 py-4 items-center justify-center gap-[8px]"
-            onClick={() => notify}
+            className="flex h-[40px] px-4 py-4 items-center justify-center gap-[8px]" type="submit"
           >
             Save Changes
           </Button>
