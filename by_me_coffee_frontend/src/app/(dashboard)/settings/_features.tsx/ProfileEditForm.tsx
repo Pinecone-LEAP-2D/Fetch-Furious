@@ -38,9 +38,7 @@ export default function ProfileEdit() {
       setImage(file);
     }
   };
-  const editProfile = async (value: z.infer<typeof profileSchema>) => {
-    console.log(value);
-    
+  const editProfile = async (value: z.infer<typeof profileSchema>) => {    
     try {
       if (!image) return;
       const formData = new FormData();
