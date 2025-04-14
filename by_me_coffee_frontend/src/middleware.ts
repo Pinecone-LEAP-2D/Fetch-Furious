@@ -16,9 +16,7 @@ export  function middleware(req: NextRequest) {
   if (token && authPaths.includes(pathname)) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
-  if (!token && !publicPaths.includes(pathname)) {
-    console.log(pathname);
-    
+  if (!token && !publicPaths.includes(pathname)) {    
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
   return NextResponse.next();

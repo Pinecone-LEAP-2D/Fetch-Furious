@@ -37,9 +37,7 @@ const router = useRouter()
   };
   const getUser = async () => {
     if (!userId) return;
-    const response = await getProfile(userId);
-    console.log(response);
-    
+    const response = await getProfile(userId);    
     setProfile(response?.data.result);
     setLoading(false)
   };

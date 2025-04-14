@@ -56,7 +56,6 @@ export const Profile = ({
 
       try {
         setUploadImage(true);
-
         const objecturl = URL.createObjectURL(file);
         setPreview(objecturl);
 
@@ -71,14 +70,10 @@ export const Profile = ({
             body: formData,
           }
         );
-
         if (!response.ok) {
           throw new Error("Upload failed");
         }
-
         const result = await response.json();
-        console.log(result);
-
         setAvatarImage(result.secure_url);
       } catch (error) {
         console.error(error);

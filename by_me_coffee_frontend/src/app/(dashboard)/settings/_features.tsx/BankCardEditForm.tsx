@@ -37,7 +37,6 @@ export default function BankCardEdit() {
     },
   });
   const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
-    console.log(value);
     try {
       const res = await putBankCard(value);
       if (res){
