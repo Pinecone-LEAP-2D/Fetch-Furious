@@ -2,7 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProfile } from "@/provider/ProfileProvider";
@@ -116,6 +116,7 @@ export default function ProfileEdit() {
                       className="flex px-3 py-4 w-[460px] items-center"
                     />
                   </FormControl>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -133,6 +134,7 @@ export default function ProfileEdit() {
                       className="flex px-3 py-4 w-[460px] items-center"
                     />
                   </FormControl>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -151,6 +153,7 @@ export default function ProfileEdit() {
                       className="flex px-3 w-[460px] py-4 items-center"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
