@@ -6,6 +6,7 @@ import { UserProvider } from "@/provider/UserProvider";
 import { ProfileProvider } from "@/provider/ProfileProvider";
 import { BankCardProvider } from "@/provider/BankCardProvider";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,16 +33,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider>
-          <UserProvider>
-            <ProfileProvider>
-              <BankCardProvider>
-                {children}
-                <Toaster />
-              </BankCardProvider>
-            </ProfileProvider>
-          </UserProvider>
-        </ThemeProvider>
+        <Suspense>
+          <ThemeProvider>
+            <UserProvider>
+              <ProfileProvider>
+                <BankCardProvider>
+                  {children}
+                  <Toaster />
+                </BankCardProvider>
+              </ProfileProvider>
+            </UserProvider>
+          </ThemeProvider>
+        </Suspense>
       </body>
     </html>
   );

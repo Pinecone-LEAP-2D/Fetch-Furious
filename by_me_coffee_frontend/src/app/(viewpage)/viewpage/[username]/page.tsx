@@ -12,12 +12,16 @@ import { EditProfile } from "../_features/EditProfile";
 import Loading from "@/components/Loading";
 import { useProfile } from "@/provider/ProfileProvider";
 import Donar, { DonationType } from "../_components/Donar";
+import { Button } from "@/components/ui/button";
+import { Camera } from "lucide-react";
 
 export default function Home() {
   const { username } = useParams();
   const { profile } = useProfile();
   const [profile1, setProfile] = useState<Profile>();
   const [donations, sendDonation] = useState<DonationType[]>();
+  const [editing, setEditing] = useState(false);
+
   const fetchProfile = async () => {
     try {
       if (!username) return;
@@ -42,16 +46,30 @@ export default function Home() {
   if (!profile1) {
     return <Loading />;
   }
+
   return (
     <div className="w-scree items-center flex flex-col">
       <div className="w-full h-[500px]">
         {profile1.backgroundImage ? (
           <div className="w-full h-full overflow-hidden relative flex items-center">
-            <img
-              alt="backgroundImage"
-              className="w-full h-auto"
-              src={profile1.backgroundImage}
-            />
+            {!editing ? (
+              <img
+                alt="backgroundImage"
+                className="w-full h-auto"
+                src={profile1.backgroundImage}
+              />
+            ) : (
+              <ImageUpload onClose={() => setEditing(false)} />
+            )}
+            {profile1.userId === profile?.userId && (
+              <>
+                {!editing && (
+                  <Button onClick={() => setEditing(true)}className="absolute top-4 right-4">
+                    <Camera /> Change cover
+                  </Button>
+                )}
+              </>
+            )}
           </div>
         ) : (
           <>{profile1.userId === profile?.userId && <ImageUpload />}</>
