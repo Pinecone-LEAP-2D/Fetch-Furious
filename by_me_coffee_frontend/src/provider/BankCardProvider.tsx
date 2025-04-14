@@ -1,7 +1,7 @@
 "use client";
 
+import { getBankCard } from "@/utils/request";
 import { BankCard } from "@prisma/client";
-import axios from "axios";
 import {
   createContext,
   ReactNode,
@@ -16,8 +16,7 @@ type BankCartContex = {
 const BankCardContext = createContext<BankCartContex | null>(null);
 export const BankCardProvider = ({ children }: { children: ReactNode }) => {
   const [bankcard, setBankCard] = useState<BankCard>();
-  const getBankCard = async () => {
-    const token = localStorage.getItem("token");
+  const getBank = async () => {
     try {
       const response = await axios.get("http://localhost:4000/bankcard", {
         headers: {
