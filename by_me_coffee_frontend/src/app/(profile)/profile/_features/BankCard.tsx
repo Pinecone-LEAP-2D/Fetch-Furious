@@ -1,6 +1,9 @@
 "use client";
-import * as React from "react";
 
+import { Button } from "@/components/ui/button";
+import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -10,24 +13,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Label } from "@radix-ui/react-label";
-import { useRouter } from "next/navigation";
+import { months } from "@/lib/localFile";
 import { bankCardSchema } from "@/schema/zodSchema";
-import { addBankCard } from "@/utils/request";
+import { addBankCard} from "@/utils/request";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { z } from "zod";
 
-export const BankCard = () => {
-  const router = useRouter();
+export default function BankCardEdit() {
+  const now = new Date().getUTCFullYear();
+  const years = Array.from({ length: 31 }, (_, idx) => now + idx);
   const form = useForm<z.infer<typeof bankCardSchema>>({
     resolver: zodResolver(bankCardSchema),
     defaultValues: {
@@ -35,175 +31,190 @@ export const BankCard = () => {
       firstName: "",
       lastName: "",
       cardNumber: "",
-      expiryDate: "",
+      year: "",
+      month: "",
     },
   });
-  const saveChanges = async (values: z.infer<typeof bankCardSchema>) => {
+  const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
+    console.log(value);
+    
     try {
-      await addBankCard(values);
-      router.push("/dashboard");
+      const res = await addBankCard(value);
+      console.log(res);
     } catch (error) {
       console.log(error);
     }
   };
-
+  const notify = () => toast("Success Pay");
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(saveChanges)}
-        className="flex w-[510px] h-auto flex-col gap-[24px]"
+        onSubmit={form.handleSubmit(updatedBanCard)}
+        className="flex p-6 flex-col gap-[24px] border w-[510px] rounded-xl mt-[20px]"
       >
-        <div className="flex w-[510px] flex-col h-auto">
-          <div className="flex p-[24px] flex-col gap-[6px]">
-            <p className="font-semibold text-2xl">
-              How would you like to be paid?
-            </p>
-            <p className="font-normal text-sm text-gray-400">
-              Enter location and payment details
-            </p>
-          </div>
+        <p className="font-bold text-base">Payment details</p>
+        <div className="flex flex-col gap-[24px]">
           <FormField
             control={form.control}
             name="country"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
-                  <Label className="flex flex-col gap-[12px] items-center">
-                    <p className="font-semibold text-sm">Select country</p>
-                    <Select
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <SelectTrigger className="w-[460px]">
-                        <SelectValue placeholder="Select a Country" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Country</SelectLabel>
-                          <SelectItem value="America">🇺🇸America</SelectItem>
-                          <SelectItem value="China">🇨🇳China</SelectItem>
-                          <SelectItem value="Russia">🇷🇺Russia</SelectItem>
-                          <SelectItem value="Thailand">🇹🇭Thailand</SelectItem>
-                          <SelectItem value="Mongolia">🇲🇳Mongolia</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </Label>
-                </FormControl>
-                <FormMessage />
+                <Label className="font-semibold text-sm">Select country</Label>
+                <Select
+                  defaultValue={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <SelectTrigger className="w-[460px]">
+                    <SelectValue placeholder="Select a Country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Country</SelectLabel>
+                      <SelectItem value="America">🇺🇸America</SelectItem>
+                      <SelectItem value="China">🇨🇳China</SelectItem>
+                      <SelectItem value="Russia">🇷🇺Russia</SelectItem>
+                      <SelectItem value="Thailand">🇹🇭Thailand</SelectItem>
+                      <SelectItem value="Mongolia">🇲🇳Mongolia</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <FormMessage/>
               </FormItem>
             )}
           />
-
-          <div className="flex justify-between gap-[12px] mt-[20px]">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>FirstName</Label>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="Enter your name here"
-                      className="py-2 px-3"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="flex gap-[12px] justify-between">
             <FormField
               control={form.control}
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <Label>LastName</Label>
+                  <Label className="font-semibold text-sm">Last name</Label>
                   <FormControl>
                     <Input
-                      className="resize-none"
                       {...field}
-                      placeholder="Enter your name here"
+                      className="flex px-3 py-4 items-center "
+                      placeholder="Enter lastName"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <Label className="font-semibold text-sm">First name</Label>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      className="flex px-3 py-4 items-center "
+                      placeholder="Enter lastName"
+                    />
+                  </FormControl>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
           </div>
           <FormField
             control={form.control}
-            name="cardNumber"
+            name='cardNumber'
             render={({ field }) => (
-              <FormItem className="mt-[10px]">
-                <Label>Enter Card number</Label>
+              <FormItem>
+                <Label className="font-semibold text-sm">
+                  Enter card number
+                </Label>
                 <FormControl>
                   <Input
-                    className="resize-none "
                     {...field}
+                    className="flex px-3 py-4 items-center w-[460px]"
                     placeholder="XXXX-XXXX-XXXX-XXXX"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage/>
               </FormItem>
             )}
           />
-          <div className="flex gap-[16px] justify-between mt-[15px]">
+          <div className="flex justify-between gap-[16px]">
+            <div className="flex flex-col gap-[8px]">
+              <FormField
+                control={form.control}
+                name="month"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label className="font-semibold text-sm">Expires</Label>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-[130px]">
+                        <SelectValue placeholder="Select a Month" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-[300px]">
+                        <SelectGroup>
+                          <SelectLabel>Month</SelectLabel>
+                          {months.map((month, index) => (
+                            <SelectItem
+                              key={index}
+                              value={(index + 1).toString()}
+                            >
+                              {month}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage/>
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
-              name="expiryDate"
+              name="year"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Expires</Label>
-                  <FormControl>
-                    <Input className="resize-none " {...field} type="month" />
-                  </FormControl>
-                  <FormMessage />
+                  <Label className="font-semibold text-sm">Year</Label>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-[130px]">
+                      <SelectValue placeholder="Select a Month" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      <SelectGroup>
+                        <SelectLabel>Month</SelectLabel>
+                        {years.map((year, index) => (
+                          <SelectItem key={index} value={year.toString()}>
+                            {year}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage/>
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="expiryDate"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Year</Label>
-                  <FormControl>
-                    <Input className="resize-none" {...field} type="date" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="expiryDate"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>CVC</Label>
-                  <FormControl>
-                    <Input
-                      className="resize-none "
-                      {...field}
-                      placeholder="CVC"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex flex-col gap-[8px]">
+              <Label className="font-semibold text-sm">CVC</Label>
+              <Input
+                className="w-[130px] flex flex-col gap-[4px]"
+                placeholder="CVC"
+              />
+            </div>
           </div>
-          <div className="flex justify-end gap-[10px] mt-[20px]">
-            <Button
-              className="flex w-[211px] h-fit px-8 py-4 justify-center items-center gap-[8px]"
-              type="submit"
-            >
-              Continue
-            </Button>
-          </div>
+          <Button
+            className="flex h-[40px] px-4 py-4 justify-center items-center gap-[8px]"
+            onClick={() => notify}
+          >
+            Save Changes
+          </Button>
         </div>
       </form>
     </FormProvider>
   );
-};
-export default BankCard;
+}
