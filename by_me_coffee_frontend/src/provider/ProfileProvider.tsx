@@ -12,6 +12,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { addBackground, getUserProfile } from "@/utils/request";
 
 import { Profile } from "@prisma/client";
+import { toast } from "sonner";
 
 type ProfileContext = {
   profile: Profile | null;
@@ -58,6 +59,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
       setLoading(true);
       await addBackground(image, userID);
       fetchProfile()
+      toast('background chaged')
     } catch (error) {
       console.log(error);
     } finally {

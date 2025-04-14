@@ -1,4 +1,4 @@
-"use state";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { useProfile } from "@/provider/ProfileProvider";
@@ -6,7 +6,7 @@ import { CameraIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
-const ImageUpload = () => {
+const ImageUpload = ({onClose}: {onClose? : ()=>void}) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [image, setImage ]= useState<File>()
   const generatePreview = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,11 +38,13 @@ const ImageUpload = () => {
         }
         const result = await response.json();
         await addBackgroundImage(result.secure_url);
+        setPreview(null)
+        setImage(undefined)
+        if (onClose) onClose(); 
       } catch (error) {
         console.error(error);
       }
     }
-  
   return (
     <>
       {!preview ? (
@@ -64,7 +66,7 @@ const ImageUpload = () => {
           />
           <div className="absolute top-5 right-10">
             <Button onClick={ProfileImage}>Save saveChanges</Button>
-            <Button variant='secondary' onClick={()=>setPreview(null)}>Cancel</Button>
+            <Button variant='secondary' onClick={() => { setPreview(null); onClose?.(); }}>Cancel</Button>
           </div>
         </div>
       )}
