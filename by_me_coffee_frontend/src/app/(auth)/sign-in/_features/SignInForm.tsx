@@ -41,14 +41,8 @@ export default function SignInForm() {
       setUser(true);
       router.push("/dashboard");
     } catch (error) {
-
-      
-      const err = error as AxiosError<{ error: string }>;
-      console.log(err);
-      
+      const err = error as AxiosError<{ error: string }>;      
       const errorMessage = err.response?.data.error;
-
-
       if (errorMessage == "user not found") {
         form.setError("email", { message: errorMessage });
       } else if (errorMessage === "wrong password or email") {

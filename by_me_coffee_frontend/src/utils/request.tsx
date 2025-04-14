@@ -7,8 +7,8 @@ import { z } from "zod";
 export const successMessageSchema = z.object({
   successMessage: z.string(),
 });
-const base_url = 'http://localhost:4000'
-// const base_url = 'https://fetch-furious.onrender.com'
+// const base_url = 'http://localhost:4000'
+const base_url = 'https://fetch-furious.onrender.com'
 export const postProfile = async (
   values: z.infer<typeof profileSchema>,
   image: string
@@ -39,9 +39,7 @@ export const postProfile = async (
   }
 };
 export const getProfile = async (userId: string | string[]) => {
-  try {
-    console.log(userId);
-    
+  try {    
     const response = await axios.get(
       `${base_url}/profile/user/${userId}`,);
     return response;
@@ -113,8 +111,7 @@ export const sendDonation = async (
       }
 
     );
-    console.log(response);
-    
+    return response    
   } catch (error) {
     console.log(error);
   }
@@ -132,9 +129,7 @@ export const getQr = async (
         socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
         specialMessage: data.specialMessage,
       },
-    );
-    console.log(response);
-    
+    );    
     return response
   } catch (error) {
     console.log(error);
@@ -172,7 +167,6 @@ export const getDonation = async (userId: string | string[] | number) => {
     const response = await axios.get(
       `${base_url}/donation/all/${userId}`
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -193,7 +187,6 @@ export const getDonationWithFilter = async (
         },
       }
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -251,7 +244,7 @@ export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
         },
       }
     );
-    console.log(response);
+return response
   } catch (error) {
     console.log(error);
   }
@@ -329,9 +322,9 @@ export const getBankCard = async () => {
         Authorization: token,
       },
     });
-    console.log(response , `dwdce`);
     return response
   } catch (error) {
     console.log(error);
   }
 }; 
+
