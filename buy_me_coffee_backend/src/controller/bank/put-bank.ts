@@ -37,7 +37,6 @@ export const putBank = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    console.log(error);
     res.status(500).send({
       success: false,
       message: "type error",
