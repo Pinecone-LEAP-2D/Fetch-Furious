@@ -262,7 +262,7 @@ export const putSuccess = async (
   }
   try {
     const response = await axios.put(
-      "http://localhost:4000/profile",
+      "http://localhost:4000/profile/success",
       {
         successMessage: values.successMessage,
       },
