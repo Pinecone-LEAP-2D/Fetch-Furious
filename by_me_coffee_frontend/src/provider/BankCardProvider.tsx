@@ -18,18 +18,15 @@ export const BankCardProvider = ({ children }: { children: ReactNode }) => {
   const [bankcard, setBankCard] = useState<BankCard>();
   const getBank = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/bankcard", {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await getBankCard()
+      if (!response) return
       setBankCard(response.data);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    getBankCard();
+    getBank();
   }, []);  
   return (
     <BankCardContext.Provider value={{ bankcard }}>
