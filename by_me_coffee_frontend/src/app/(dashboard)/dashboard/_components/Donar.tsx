@@ -20,14 +20,15 @@ const Donar = ({donation}:{donation : DonationType}) => {
         <div className=" border p-5 w-full rounded-sm">
         <div className="flex items-center  justify-between">
           <div className="flex items-center">
+            <div className="w-10 h-10 rounded-full">
             <img
-              className="rounded-full w-10 h-10 px-4 bg-gray-200 text-center flex items-center justify-center"
+              className="rounded-full w-full h-full bg-gray-200 text-center flex items-center justify-center"
               src={
                 donation.donor.profile.avatarImage
                   ? donation.donor.profile.avatarImage
                   : ""
               }
-            />
+            /></div>
             <div className=" px-2">
               <div className="flex gap-2">Guest
                 <div onClick={()=>router.push(`/viewpage/${donation.donor.id}`)} className="font-bold cursor-pointer hover:underline"> {donation.donor.profile.name}</div>
