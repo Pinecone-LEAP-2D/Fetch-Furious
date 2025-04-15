@@ -77,9 +77,9 @@ const Explore = () => {
                       <h3 className="font-semibold text-base">
                         Social media URL
                       </h3>
-                      <p className="font-normal text-sm mt-[15px]">
+                      <a href={profiles.socialMediaURL ? profiles.socialMediaURL : '#'} className="font-normal text-sm mt-[15px]  hover:underline">
                         {profiles.socialMediaURL}
-                      </p>
+                      </a>
                     </div>
                   </div>
                 </div>
