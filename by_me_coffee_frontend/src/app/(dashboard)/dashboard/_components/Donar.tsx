@@ -33,7 +33,7 @@ const Donar = ({donation}:{donation : DonationType}) => {
               <div className="flex gap-2">Guest
                 <div onClick={()=>router.push(`/viewpage/${donation.donor.id}`)} className="font-bold cursor-pointer hover:underline"> {donation.donor.profile.name}</div>
               </div>
-              <p className="cursor-pointer hover:underline text-sm">{donation.socialURLOrBuyMeACoffee}</p>
+              <a href={donation.socialURLOrBuyMeACoffee} className="cursor-pointer hover:underline text-sm">{donation.socialURLOrBuyMeACoffee}</a>
             </div>
           </div>
           <div className="flex flex-col justify-center items-center">
