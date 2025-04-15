@@ -7,8 +7,8 @@ import { z } from "zod";
 export const successMessageSchema = z.object({
   successMessage: z.string(),
 });
-// const base_url = 'http://localhost:4000'
-const base_url = 'https://fetch-furious.onrender.com'
+const base_url = 'http://localhost:4000'
+// const base_url = 'https://fetch-furious.onrender.com'
 export const postProfile = async (
   values: z.infer<typeof profileSchema>,
   image: string
@@ -116,14 +116,61 @@ export const sendDonation = async (
     console.log(error);
   }
 };
+export const sendDonationUnsigned = async (
+  data: z.infer<typeof donationSchema>,
+  recipientId: number,
+) => {
+
+  try {
+    const response = await axios.post(
+      `${base_url}/donation/unsigned`,
+      {
+        amount: data.amount,
+        specialMessage: data.specialMessage,
+        socialURLOrBuyMeACoffee : data.socialURLOrBuyMeACoffee
+      },{
+        params : {
+          recipientId
+        }
+      }
+
+    );
+    return response    
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getQr = async (
   data: z.infer<typeof donationSchema>,
   recipientId: number
 ) => {
+  const token = localStorage.getItem('token')
   try {
     const response = await axios.post(
-      `${base_url}/qr/${recipientId}`,
+      `${base_url}/qr/signed/${recipientId}`,
+      {
+        amount: data.amount,
+        socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
+        specialMessage: data.specialMessage,
+      },{
+        headers:{
+          Authorization : token
+        }
+      }
+    );    
+    return response
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getQrUnsigne = async (
+  data: z.infer<typeof donationSchema>,
+  recipientId: number
+) => {
+  try {
+    const response = await axios.post(
+      `${base_url}/qr/unsigned/${recipientId}`,
       {
         amount: data.amount,
         socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
@@ -328,4 +375,5 @@ export const getBankCard = async () => {
     console.log(error);
   }
 }; 
+
 

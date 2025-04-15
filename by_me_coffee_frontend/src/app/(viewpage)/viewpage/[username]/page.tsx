@@ -113,7 +113,6 @@ export default function Home() {
         </div>
         <DonationZone
           profiles={profile1}
-          getRecivedDonnation={getRecivedDonnation}
         />
       </div>
     </div>
