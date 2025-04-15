@@ -7,14 +7,13 @@ const donationSchema = z.object({
   specialMessage: z.string().optional(),
   socialURLOrBuyMeACoffee: z.string().min(1).optional(),
 });
-export const generateQrCode = async (req: Request, res: Response) => {
+export const generateQrCodeUnsigned = async (req: Request, res: Response) => {
   const data = donationSchema.parse(req.body);  
   const userId = req.params.userId;
-  const donorId = req.userid
   try {
     if (data) {
       const { socialURLOrBuyMeACoffee, amount, specialMessage } = data;    
-      const qrData = `http://localhost:3000/payment?donorid=${donorId}&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}`;
+      const qrData = `http://localhost:3000/payment/unsigned?&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}&socialurl=${socialURLOrBuyMeACoffee}`;
       const qrCode = qr.imageSync(qrData, { type: 'svg' });
       res.status(200).json({ data: qrCode, link : qrData });
     } else {

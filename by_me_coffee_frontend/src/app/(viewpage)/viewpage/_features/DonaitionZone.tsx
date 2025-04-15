@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useProfile } from "@/provider/ProfileProvider";
-import { getQr } from "@/utils/request";
+import { getQr, getQrUnsigne } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Profile } from "@prisma/client";
 import { Coffee } from "lucide-react";
@@ -24,10 +24,8 @@ export const donationSchema = z.object({
 });
 const DonationZone = ({
   profiles,
-  getRecivedDonnation,
 }: {
   profiles: Profile;
-  getRecivedDonnation: () => void;
 }) => {
   const { profile } = useProfile();
   const [open, setOpen] = useState(false)
@@ -52,11 +50,20 @@ const DonationZone = ({
       return;
     }
     try {
-      const response = await getQr(data, profiles.userId);
-      setOpen(true)
-      setqr(response?.data.data);
-      setLink(response?.data.link)
-      getRecivedDonnation();
+      if (profile?.userId ) {  
+        const response = await getQr(data, profiles.userId);
+        console.log(response);
+        
+        setOpen(true)
+        setqr(response?.data.data);
+        setLink(response?.data.link)
+      }else{
+        const response = await getQrUnsigne(data, profiles.userId);
+        setOpen(true)
+        setqr(response?.data.data);
+        setLink(response?.data.link)
+      }
+      
     } catch (error) {
       console.log(error);
     }

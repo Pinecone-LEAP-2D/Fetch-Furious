@@ -2,6 +2,7 @@
 'use client'
 
 import { Profile } from "@prisma/client";
+import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export type DonationType = {
@@ -17,15 +18,15 @@ const Donar = ({donation}:{donation : DonationType}) => {
     const router = useRouter()
     return (
         <div className="w-full flex gap-3">
-        <img
+        {donation.donor?.profile?.avatarImage ?(<img
           src={
-            donation.donor.profile.avatarImage
+            donation.donor?.profile?.avatarImage
               ? donation.donor.profile.avatarImage
               : "/next.svg"
           }
           alt="avatar image"
           className="w-8 h-8 rounded-full"
-        />
+        />):<User className="w-8 h-8 rounded-full"/>}
         <div className="flex flex-col gap-3">
           <div className="text-lg flex gap-2">
             <div
@@ -35,7 +36,7 @@ const Donar = ({donation}:{donation : DonationType}) => {
               className="font-bold cursor-pointer hover:text-blue-600 hover:underline"
             >
               {" "}
-              {donation.donor.profile.name}{" "}
+              {donation.donor?.profile?.name }{" "}
             </div>
             bought ${donation.amount} coffee
           </div>
