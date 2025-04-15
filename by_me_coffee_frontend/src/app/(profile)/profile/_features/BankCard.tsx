@@ -15,11 +15,13 @@ import { Label } from "@/components/ui/label";
 import { bankCardSchema } from "@/schema/zodSchema";
 import { addBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
 
 export default function BankCardEdit() {
+  const router = useRouter()
   const form = useForm<z.infer<typeof bankCardSchema>>({
     resolver: zodResolver(bankCardSchema),
     defaultValues: {
@@ -32,9 +34,11 @@ export default function BankCardEdit() {
     },
   });
   const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
-
     try {
-      await addBankCard(value);
+      const response =  await addBankCard(value);
+      if (response) {
+        router.push('/dashboard')
+      }
     } catch (error) {
       console.log(error);
     }
