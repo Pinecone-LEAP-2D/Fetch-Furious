@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
-    const response = NextResponse.redirect(new URL('/sign-in', req.url));
+    const response = NextResponse.json({message:"sign put"})
     response.cookies.set('auth_token', '', {
       maxAge: 0, 
     });
