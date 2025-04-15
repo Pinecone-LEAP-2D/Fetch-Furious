@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { getDonation, getProfile } from "@/utils/request";
-import { Profile } from "@prisma/client";
+import { getProfile } from "@/utils/request";
+import { Profile} from "@prisma/client";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,12 +14,15 @@ import { useProfile } from "@/provider/ProfileProvider";
 import Donar, { DonationType } from "../_components/Donar";
 import { Button } from "@/components/ui/button";
 import { Camera } from "lucide-react";
-
+interface ProfileType extends Profile {
+  user: {
+    receivedDonations : DonationType[]
+  }
+}
 export default function Home() {
   const { username } = useParams();
   const { profile } = useProfile();
-  const [profile1, setProfile] = useState<Profile>();
-  const [donations, sendDonation] = useState<DonationType[]>();
+  const [profile1, setProfile] = useState<ProfileType>();
   const [editing, setEditing] = useState(false);
 
   const fetchProfile = async () => {
@@ -32,14 +35,9 @@ export default function Home() {
       console.log(error);
     }
   };
-  const getRecivedDonnation = async () => {
-    if (!username) return;
-    const response = await getDonation(username);
-    sendDonation(response.data);
-  };
+
   useEffect(() => {
     fetchProfile();
-    getRecivedDonnation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -105,7 +103,7 @@ export default function Home() {
           <div className="p-6 border rounded-lg flex flex-col gap-4">
             <div className="text-lg font-semibold">Recent supporters</div>
             <div className="h-[250px] w-full overflow-scroll p-6 flex gap-4 flex-col border rounded-lg">
-              {donations?.map((donation: DonationType, index) => (
+              {profile1.user.receivedDonations.map((donation: DonationType, index) => (
                 <Donar donation={donation} key={index} />
               ))}
             </div>
