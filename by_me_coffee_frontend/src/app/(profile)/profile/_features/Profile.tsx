@@ -44,8 +44,10 @@ export const Profile = ({
   });
   const saveChanges = async (values: z.infer<typeof profileSchema>) => {
     try {
-      await postProfile(values, avatarImage);
-      setStep("bankCard");
+      const response = await postProfile(values, avatarImage);
+      if (response) {
+        setStep("bankCard");      
+      }
     } catch (error) {
       console.log(error);
     }

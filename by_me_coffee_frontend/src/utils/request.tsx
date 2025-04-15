@@ -143,7 +143,7 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   }
 
   try {
-    await axios.post(
+    const response= await axios.post(
       `${base_url}/bankcard/`,
       {
         country: value.country,
@@ -158,6 +158,7 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
         },
       }
     );
+    return response
   } catch (error) {
     console.log(error);
   }
