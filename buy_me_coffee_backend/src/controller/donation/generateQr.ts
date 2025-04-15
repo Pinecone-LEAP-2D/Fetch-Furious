@@ -18,7 +18,7 @@ export const generateQrCode = async (req: Request, res: Response) => {
           socialMediaURL: socialURLOrBuyMeACoffee,
         },
       });      
-      const qrData = `http://localhost:3000/payment/?donorid=${user?.userId}&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}`;
+      const qrData = `https://fetchfurious-uskhuu-533-uskhuuus-projects.vercel.app/payment/?donorid=${user?.userId}&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}`;
       const qrCode = qr.imageSync(qrData, { type: 'svg' });
       res.status(200).json({ data: qrCode, link : qrData });
     } else {
