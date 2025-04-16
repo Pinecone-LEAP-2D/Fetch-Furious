@@ -13,7 +13,6 @@ export default function Home() {
   const [scrolled, setScolled] = useState(false);
   const lastScrollY = useRef(0);
   console.log();
-  console.log(window.scrollY);
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -101,6 +100,7 @@ export default function Home() {
               <div>{data.title1}</div>
             </div>
             <div className="text-[24px] text-center">{data.text}</div>
+            <img src={data.image} width={824} height={481}/>
           </div>
         ))}
         <div className="w-290">
