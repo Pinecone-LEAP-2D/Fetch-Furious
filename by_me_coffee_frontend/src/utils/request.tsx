@@ -7,8 +7,8 @@ import { z } from "zod";
 export const successMessageSchema = z.object({
   successMessage: z.string(),
 });
-const base_url = 'http://localhost:4000'
-// const base_url = 'https://fetch-furious.onrender.com'
+// const base_url = 'http://localhost:4000'
+const base_url = 'https://fetch-furious.onrender.com'
 export const postProfile = async (
   values: z.infer<typeof profileSchema>,
   image: string

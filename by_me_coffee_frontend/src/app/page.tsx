@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { mainPageData } from "@/lib/localFile";
 import { BookHeart, CalendarDays, CircleCheck, FileLock, Globe, Heart, Instagram, Mail, Search, Star, Twitter, Youtube } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 
 export default function Home() {
+  const router = useRouter()
   const [showHeader, setShowHeader] = useState(true);
   const [scrolled, setScolled] = useState(false);
   const lastScrollY = useRef(0);
@@ -53,8 +55,8 @@ export default function Home() {
             <Search className="absolute left-4" size={18}/>
             <Input className=" pl-10 h-full w-full rounded-[30px] font-semibold bg-black/3 hover:bg-black/8" placeholder="Search a creators"/>
           </div>
-          <Button className="py-6 text-lg font-semibold rounded-3xl cursor-pointer" variant='ghost'>Sign in</Button>
-          <Button className="py-6 text-lg font-semibold rounded-3xl cursor-pointer hover:bg-yellow-300 bg-yellow-300 text-black" >Sign up</Button>
+          <Button onClick={()=>router.push('/sign-in')} className="py-6 text-lg font-semibold rounded-3xl cursor-pointer" variant='ghost'>Sign in</Button>
+          <Button onClick={()=>router.push('sign-up')} className="py-6 text-lg font-semibold rounded-3xl cursor-pointer hover:bg-yellow-300 bg-yellow-300 text-black" >Sign up</Button>
         </div>
       </div>
       <div className="flex items-center gap-4 mb-10 mt-[130px]">
@@ -75,7 +77,7 @@ export default function Home() {
         you think.
       </p>
 
-      <Button className="rounded-full flex items-center justify-center h-24 text-24 px-20 mt-1 cursor-pointer bg-yellow-300">
+      <Button onClick={()=>router.push('/sign-up')} className="rounded-full flex items-center justify-center h-24 text-24 px-20 mt-1 cursor-pointer bg-yellow-300">
         <h2 className="z-10 text-black font-semibold text-3xl">
           Start my page
         </h2>
@@ -84,8 +86,6 @@ export default function Home() {
       <h4 className="text-dark mt-5 w-600 text-center font-normal text-lg">
         It&apos;s free and takes less than a minute!
       </h4>
-
-      {/* Sections */}
       <div className="mt-24 flex flex-col max-w-[1140px] w-full gap-6">
         {mainPageData.map((data, i) => (
           <div
@@ -134,7 +134,7 @@ export default function Home() {
           </div>
         </div>
         </div>
-        <div className="bg-white rounded-[48px] w-290 text-center pt-10 pb-10 px-10 ">
+        <div className="bg-white rounded-[48px] w-full text-center p-12 px-24 ">
           <h2 className="animated-content mt-24 text-dark font-bold text-6xl"> Make 20% or more, 
             <p className="text-gray-500 font-bold text-6xl">compared to other platforms.</p>
           </h2>
