@@ -103,7 +103,7 @@ export default function Home() {
           <div className="p-6 border rounded-lg flex flex-col gap-4">
             <div className="text-lg font-semibold">Recent supporters</div>
             <div className="h-[250px] w-full overflow-scroll p-6 flex gap-4 flex-col border rounded-lg">
-              {profile1.user.receivedDonations.map((donation: DonationType, index) => (
+              {profile1.user?.receivedDonations.map((donation: DonationType, index) => (
                 <Donar donation={donation} key={index} />
               ))}
             </div>
