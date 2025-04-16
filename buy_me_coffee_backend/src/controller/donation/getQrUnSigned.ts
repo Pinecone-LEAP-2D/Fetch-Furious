@@ -13,7 +13,7 @@ export const generateQrCodeUnsigned = async (req: Request, res: Response) => {
   try {
     if (data) {
       const { socialURLOrBuyMeACoffee, amount, specialMessage } = data;    
-      const qrData = `http://localhost:3000/payment/unsigned?&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}&socialurl=${socialURLOrBuyMeACoffee}`;
+      const qrData = `https://fetchfurious.vercel.app/payment/unsigned?&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}&socialurl=${socialURLOrBuyMeACoffee}`;
       const qrCode = qr.imageSync(qrData, { type: 'svg' });
       res.status(200).json({ data: qrCode, link : qrData });
     } else {

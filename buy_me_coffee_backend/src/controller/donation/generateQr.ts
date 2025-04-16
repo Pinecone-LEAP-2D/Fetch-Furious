@@ -14,7 +14,7 @@ export const generateQrCode = async (req: Request, res: Response) => {
   try {
     if (data) {
       const { socialURLOrBuyMeACoffee, amount, specialMessage } = data;    
-      const qrData = `http://localhost:3000/payment?donorid=${donorId}&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}`;
+      const qrData = `https://fetchfurious.vercel.app/payment?donorid=${donorId}&userid=${userId}&speacialmessage=${specialMessage}&amount=${amount}`;
       const qrCode = qr.imageSync(qrData, { type: 'svg' });
       res.status(200).json({ data: qrCode, link : qrData });
     } else {
