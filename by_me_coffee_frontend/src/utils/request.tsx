@@ -48,7 +48,7 @@ export const getProfile = async (userId: string | string[]) => {
   }
 };
 
-export const getManyProfile = async (page = 1, name: string) => {
+export const getManyProfile = async (page: number, name: string) => {
   const token = localStorage.getItem(`token`);
 
   if (!token) {
@@ -185,7 +185,6 @@ export const getQrUnsigne = async (
 export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   const token = localStorage.getItem(`token`);
   if (!token) {
-    console.warn(`No token found in localStorage.`);
     return null;
   }
 
@@ -246,7 +245,6 @@ export const putProfile = async (
 ) => {
   const token = localStorage.getItem(`token`);
   if (!token) {
-    console.warn(`No token found in localStorage.`);
     return null;
   }
   try {
@@ -272,7 +270,6 @@ export const putProfile = async (
 export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   const token = localStorage.getItem(`token`);
   if (!token) {
-    console.log(`No token found in localStorage.`);
     return null;
   }
 
@@ -302,7 +299,6 @@ export const putSuccess = async (
 ) => {
   const token = localStorage.getItem(`token`);
   if (!token) {
-    console.warn(`No token found in localStorage.`);
     return null;
   }
   try {
@@ -325,7 +321,6 @@ export const putSuccess = async (
 export const putUser = async (values: z.infer<typeof passwordSchema>) => {
   const token = localStorage.getItem(`token`);
   if (!token) {
-    console.warn(`No token found in localStorage.`);
     return null;
   }
   try {
@@ -348,7 +343,6 @@ export const putUser = async (values: z.infer<typeof passwordSchema>) => {
 export const getUserProfile = async () => {
   const token = localStorage.getItem(`token`);
   if (!token) {
-    console.warn(`No token found in localStorage.`);
     return null;
   }
   try {

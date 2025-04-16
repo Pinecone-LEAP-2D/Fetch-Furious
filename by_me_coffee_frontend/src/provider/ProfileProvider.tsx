@@ -19,14 +19,14 @@ type ProfileContext = {
   addBackgroundImage : (image:string)=>void
   userID : string
   loading :boolean
-  setUser : (user : boolean) => void
-  setProfile : (profile : Profile | null) => void
+  setProfile : (profile : Profile | null) => void,
+  fetchProfile : ()=>void,
+  setLoading : (loading : boolean) =>void
 };
 const ProfileContex = createContext<ProfileContext | null>(null);
 
 export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(false)
   const [profile, setProfile] = useState<Profile | null>(null);
   const [userID, setUserID] = useState("");
   const fetchProfile = async () => {
@@ -53,7 +53,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     fetchProfile();
     getUserID()
-  }, [user]);
+  }, []);
   const addBackgroundImage = async (image: string) => {
     try {
       setLoading(true);
@@ -67,7 +67,7 @@ export const ProfileProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   return (
-    <ProfileContex.Provider value={{ profile, addBackgroundImage, userID, loading , setUser, setProfile}}>
+    <ProfileContex.Provider value={{ profile, addBackgroundImage, userID, loading , setProfile, fetchProfile, setLoading}}>
       {children}
     </ProfileContex.Provider>
   );

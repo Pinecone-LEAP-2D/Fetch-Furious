@@ -22,7 +22,7 @@ const signInSchema = z.object({
 });
 export default function SignInForm() {
   const router = useRouter();
-  const { setUser } = useProfile();
+  const { fetchProfile } = useProfile();
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -38,7 +38,7 @@ export default function SignInForm() {
         password: values.password,
       });
       localStorage.setItem("token", response.data.token);
-      setUser(true);
+      await fetchProfile()
       router.push("/dashboard");
     } catch (error) {
       const err = error as AxiosError<{ error: string }>;      

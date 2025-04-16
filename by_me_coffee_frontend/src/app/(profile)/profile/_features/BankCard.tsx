@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useProfile } from "@/provider/ProfileProvider";
 import { bankCardSchema } from "@/schema/zodSchema";
 import { addBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,6 +22,7 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 
 export default function BankCardEdit() {
+  const {setLoading} = useProfile()
   const router = useRouter()
   const form = useForm<z.infer<typeof bankCardSchema>>({
     resolver: zodResolver(bankCardSchema),
@@ -37,6 +39,7 @@ export default function BankCardEdit() {
     try {
       const response =  await addBankCard(value);
       if (response) {
+        await setLoading(true)
         router.push('/dashboard')
       }
     } catch (error) {
