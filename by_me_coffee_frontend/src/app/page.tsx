@@ -5,7 +5,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { mainPageData } from "@/lib/localFile";
-import { Heart, Search, Star } from "lucide-react";
+import { BookHeart, CalendarDays, CircleCheck, FileLock, Globe, Heart, Mail, Search, Star } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
 export default function Home() {
@@ -13,7 +13,6 @@ export default function Home() {
   const [scrolled, setScolled] = useState(false);
   const lastScrollY = useRef(0);
   console.log();
-  console.log(window.scrollY);
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -101,8 +100,72 @@ export default function Home() {
               <div>{data.title1}</div>
             </div>
             <div className="text-[24px] text-center">{data.text}</div>
+            <img src={data.image} width={824} height={481}/>
           </div>
         ))}
+        <div className="w-290">
+        <div className="mb-20 flex items-center flex-col">
+          <h2 className="mt-32 text-center text-dark w-3/4 font-bold text-6xl text-64"> Designed for creators, 
+            <p className="text-gray-500">not for businesses.</p>
+          </h2>
+          <div className="mt-30 grid grid-cols-2 flex-wrap gap-x-20 w-4/5 gap-y-20  ">
+            <div className="flex">
+              <CircleCheck width={100} height={100}/>
+              <h3 className="text-24 font-semibold text-2xl text-gray-400">We dont call them customers or transactions. They are your
+              <span className="text-dark  font-semibold text-2xl"> supporters.</span>
+              </h3>
+            </div>
+            <div className="flex">
+              <CircleCheck width={100} height={100}/>
+              <h3 className="text-24 text-center  font-semibold text-2xl text-gray-400">You have <p>100% ownership</p> of your supporters. We never email them, and you can export the list any time you like.</h3>
+            </div>
+            <div className="flex">
+              <CircleCheck width={100} height={100}/>
+              <h3 className="text-24 font-semibold text-2xl text-gray-400">We dont call them customers or transactions. They are your
+              <span className="text-dark  font-semibold text-2xl"> supporters.</span>
+              </h3>
+            </div>
+            <div className="flex">
+              <CircleCheck width={100} height={100}/>
+              <h3 className="text-24 font-semibold text-2xl text-gray-400">We dont call them customers or transactions. They are your
+              <span className="text-dark  font-semibold text-2xl"> supporters.</span>
+              </h3>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div className="bg-white rounded-[48px] w-290 text-center pt-10 pb-10 px-10 ">
+          <h2 className="animated-content mt-24 text-dark font-bold text-6xl"> Make 20% or more, 
+            <p className="text-gray-500 font-bold text-6xl">compared to other platforms.</p>
+          </h2>
+          <div className="grid grid-cols-3 gap-y-30 gap-x-30 mt-20">
+            <div className="text-left">
+              <CalendarDays width={46} height={50}/>
+              <h3 className="text-dark text-20 font-bold text-xl mt-1 mb-4">Not just a membership</h3>
+              <h4 className="text-gray-400 text-20 font-bold text-xl">Creators who previously only used Patreon noticed a massive increase in earnings after accepting one-off payments.</h4>
+            </div>
+            <div className="text-left">
+              <Globe width={46} height={50}/> 
+              <h3 className="text-dark text-20 font-bold text-xl mt-1 mb-4">6 new languages</h3>
+              <h4 className="text-gray-400 text-20 font-bold text-xl">We now support Spanish, French, Italian, German and Ukrainian—making it easier for your global audience to support you.</h4>
+            </div>
+            <div className="text-left">
+              <Mail width={46} height={50}/>
+              <h3 className="text-dark text-20 font-bold text-xl mt-1 mb-4">Email marketing</h3>
+              <h4 className="text-gray-400 text-20 font-bold text-xl">Instead of paying separately for email marketing tools like Mailchimp, send unlimited emails to your fans for free.</h4>
+            </div>
+            <div className="text-left">
+            <BookHeart width={46} height={50}/>
+              <h3 className="text-dark text-20 font-bold text-xl mt-1 mb-4">Being friendly converts</h3>
+              <h4 className="text-gray-400 text-20 font-bold text-xl">ICYMI, we make it simple and fun for your supporters. While you cannot put a number on feelings, it tends to show on the results.</h4>
+            </div>
+            <div className="text-left">
+            <FileLock width={46} height={50}/>
+              <h3 className="text-dark text-20 font-bold text-xl mt-1 mb-4">Your privacy comes first</h3>
+              <h4 className="text-gray-400 text-20 font-bold text-xl">Receive fan support safely without disclosing your identity or address. We’ll do the heavy-lifting.</h4>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
