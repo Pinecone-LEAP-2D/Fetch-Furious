@@ -13,7 +13,6 @@ import Donar, { DonationType } from "./_components/Donar";
 import SelectDate from "./_components/SelectDate";
 import SelectAmount from "./_components/SelectAmount";
 
-
 export default function Home() {
   const amounts = [1, 3, 5, 10, 15, 20];
   const router = useRouter();
@@ -21,11 +20,11 @@ export default function Home() {
   const [donations, setDonation] = useState<DonationType[]>();
   const [totalAmount, setTotalAmount] = useState(0);
   const [dateFilter, setDateFilter] = useState<string | number>(30);
-  const { profile, loading, userID } = useProfile();
+  const { profile, loading, userID, fetchProfile } = useProfile();
   const fetchDonation = async () => {
     if (profile) {
       const response = await getDonationWithFilter(
-        profile?.userId,
+       userID,
         amount,
         dateFilter
       );
@@ -33,10 +32,14 @@ export default function Home() {
       setTotalAmount(response.totalAmount);
     }
   };
+  useEffect(()=>{
+    fetchProfile()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
   useEffect(() => {
     fetchDonation();
     if (!profile && !loading) {
-      router.push("profile");
+      router.push("/profile");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amount, dateFilter, loading]);
@@ -46,7 +49,7 @@ export default function Home() {
   const handleSelectDate = (value: string) => {
     setDateFilter(Number(value));
   };
-  if (!profile) {
+  if (!profile || typeof profile !== 'object') {
     return <PageLoading />;
   }
   const copylink = () => {

@@ -32,7 +32,7 @@ export default function Home() {
 
   return (
     <div
-      className={`w-full flex items-center relative flex-col text-center ${
+      className={`w-full flex items-center relative flex-col text-center transition-all duration-[1s] ${
         scrolled ? " bg-[#faf8f0]" : "bg-white"
       }`}
     >

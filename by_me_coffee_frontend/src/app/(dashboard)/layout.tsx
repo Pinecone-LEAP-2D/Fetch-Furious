@@ -9,7 +9,7 @@ const DashboardLayout = ({children}:{children:ReactNode}) => {
             <DashboardHeader />
             <div className="flex flex-1 overflow-hidden gap-[300px]">
                 <Navigation />
-                <div className="flex-1 overflow-y-scroll px-6 py-10 max-w-[1440px] w-full">
+                <div className="flex-1 overflow-y-auto px-6 py-10 max-w-[1440px] w-full">
                     {children}
                 <ToastContainer/>
                 </div>

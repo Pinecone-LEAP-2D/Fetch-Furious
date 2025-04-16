@@ -22,14 +22,13 @@ export default function DashboardHeader() {
   }, []);
 
   const router = useRouter();
-  const { profile, setProfile, setUser } = useProfile();
+  const { profile, setProfile } = useProfile();
 
   const signOut = async () => {
     try {
       await axios.post("/api/auth/sign-out");
       localStorage.removeItem("token");
       setProfile(null);
-      setUser(false);
       router.push("/sign-in");
     } catch (error) {
       console.log(error);
