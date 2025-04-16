@@ -5,7 +5,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { mainPageData } from "@/lib/localFile";
-import { BookHeart, CalendarDays, CircleCheck, FileLock, Globe, Heart, Mail, Search, Star } from "lucide-react";
+import { BookHeart, CalendarDays, CircleCheck, FileLock, Globe, Heart, Instagram, Mail, Search, Star, Twitter, Youtube } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
 export default function Home() {
@@ -163,6 +163,26 @@ export default function Home() {
             <FileLock width={46} height={50}/>
               <h3 className="text-dark text-20 font-bold text-xl mt-1 mb-4">Your privacy comes first</h3>
               <h4 className="text-gray-400 text-20 font-bold text-xl">Receive fan support safely without disclosing your identity or address. We’ll do the heavy-lifting.</h4>
+            </div>
+          </div>
+        </div>
+        <div className="pb-10 mt-10">
+          <div className="flex w-290">
+            <div className="text-16 flex items-center mr-16 font-semibold text-sm text-gray-500"> © Buy Me a Coffee </div>
+            <div className="flex w-full justify-center">
+              <p className="text-dark font-bold mr-15 flex items-center text-sm ">About</p>
+              <p className="text-dark font-bold mr-15 flex items-center text-sm">Help center</p>
+              <p className="text-dark font-bold mr-15 flex items-center text-sm">Apps</p>
+              <p className="text-dark font-bold mr-15 flex items-center text-sm">Resources</p>
+              <p className="text-dark font-bold mr-15 flex items-center text-sm">Privacy</p>
+              <p className="text-dark font-bold mr-15 flex items-center text-sm">Terms</p>
+            </div>
+            <div className="flex flex-wrap-reverse ">
+              <div className="flex justify-center gap-6">
+              <Twitter width={35} height={35}/>
+              <Youtube width={35} height={35}/>
+              <Instagram width={35} height={35}/>
+              </div>
             </div>
           </div>
         </div>
