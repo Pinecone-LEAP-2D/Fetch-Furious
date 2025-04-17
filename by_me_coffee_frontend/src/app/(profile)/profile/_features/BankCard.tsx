@@ -16,13 +16,16 @@ import { useProfile } from "@/provider/ProfileProvider";
 import { bankCardSchema } from "@/schema/zodSchema";
 import { addBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+;
 import { z } from "zod";
 
 export default function BankCardEdit() {
   const {setLoading} = useProfile()
+  const [loading, setLoad] = useState(false)
   const router = useRouter()
   const form = useForm<z.infer<typeof bankCardSchema>>({
     resolver: zodResolver(bankCardSchema),
@@ -36,6 +39,7 @@ export default function BankCardEdit() {
     },
   });
   const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {
+    setLoad(true)
     try {
       const response =  await addBankCard(value);
       if (response) {
@@ -44,9 +48,10 @@ export default function BankCardEdit() {
       }
     } catch (error) {
       console.log(error);
+      setLoad(false)
     }
   };
-  const notify = () => toast("Success Pay");
+  
   return (
     <FormProvider {...form}>
       <form
@@ -165,9 +170,9 @@ export default function BankCardEdit() {
           </div>
           <Button
             className="flex h-[40px] px-4 py-4 justify-center items-center gap-[8px]"
-            onClick={() => notify}
+            disabled={loading}
           >
-            Save Changes
+            {loading ? <Loader2 className="animate-spin"/> : "Save Changes"}
           </Button>
         </div>
       </form>
