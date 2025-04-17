@@ -10,6 +10,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 export default function UserName({
@@ -32,8 +34,10 @@ export default function UserName({
   >;
   setStep: (step: "username" | "emailAndPassword") => void;
 }) {
+  const [loading, setLoading] = useState(false);
   const signUpStep1 = async () => {
     if (form.watch("username").length < 3) return;
+    setLoading(true);
     try {
       await axios.post("/api/auth/username", {
         username: form.watch("username"),
@@ -43,6 +47,8 @@ export default function UserName({
     } catch (error) {
       console.log(error);
       form.setError("username", { message: "username already taken" });
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -72,12 +78,14 @@ export default function UserName({
         )}
       />
       <Button
+        disabled={loading}
         onClick={signUpStep1}
-        variant={form.watch("username").length === 0 ? "secondary" : "default"}
-        className={`w-full text-white py-2 cursor-pointer ${
-          form.watch("username").length === 0 && "cursor-not-allowed"
+        variant={form.watch("username").length < 3 ? "secondary" : "default"}
+        className={`w-full text-white py-2 cursor-pointer  ${
+          form.watch("username").length < 3  && "cursor-not-allowed"
         }`}
       >
+        {loading && <Loader2 className="animate-spin" />}
         Continue
       </Button>
     </div>

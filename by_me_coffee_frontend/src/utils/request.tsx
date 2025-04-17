@@ -7,8 +7,8 @@ import { z } from "zod";
 export const successMessageSchema = z.object({
   successMessage: z.string(),
 });
-// const base_url = 'http://localhost:4000'
-const base_url = 'https://fetch-furious.onrender.com'
+const base_url = 'http://localhost:4000'
+// const base_url = 'https://fetch-furious.onrender.com'
 export const postProfile = async (
   values: z.infer<typeof profileSchema>,
   image: string
@@ -49,18 +49,10 @@ export const getProfile = async (userId: string | string[]) => {
 };
 
 export const getManyProfile = async (page: number, name: string) => {
-  const token = localStorage.getItem(`token`);
 
-  if (!token) {
-    console.warn(`No token found in localStorage.`);
-    return null;
-  }
 
   try {
     const response = await axios.get(`${base_url}/profile/explore`, {
-      headers: {
-        Authorization: token,
-      },
       params: { page, name },
     });
     return response.data;

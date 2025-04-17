@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import UserName from "../_components/UserName";
 import Email from "../_components/EmailForm";
+import { toast } from "sonner";
 const signUpSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -15,6 +16,7 @@ const signUpSchema = z.object({
 });
 export default function SignUpForm() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false)
   const [step, setStep] = useState<"username" | "emailAndPassword">("username");
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -27,15 +29,19 @@ export default function SignUpForm() {
 
   const signUp = async (values: z.infer<typeof signUpSchema>) => {
     try {
+      setLoading(true)
       await axios.post("api/auth/sign-up", {
         email: values.email,
         password: values.password,
         username: values.username,
       });
+      toast('sign up succesful')
       router.push("/sign-in");
     } catch (error) {
       console.log(error);
       form.setError("email", { message: "email already used" });
+    }finally {
+      setLoading(false)
     }
   };
 
@@ -43,7 +49,7 @@ export default function SignUpForm() {
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(signUp)} className="w-[407px]">
         {step === "username" && <UserName form={form} setStep={setStep} />}
-        {step === "emailAndPassword" && <Email form={form} />}
+        {step === "emailAndPassword" && <Email form={form} loading={loading}/>}
       </form>
     </FormProvider>
   );

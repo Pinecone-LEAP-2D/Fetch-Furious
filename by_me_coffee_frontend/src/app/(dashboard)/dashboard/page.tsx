@@ -12,8 +12,10 @@ import { toast } from "react-toastify";
 import Donar, { DonationType } from "./_components/Donar";
 import SelectDate from "./_components/SelectDate";
 import SelectAmount from "./_components/SelectAmount";
+import LoadingDonar from "./_components/LoadingDonar";
 
 export default function Home() {
+  const [loading1, setLoading] = useState(false);
   const amounts = [1, 3, 5, 10, 15, 20];
   const router = useRouter();
   const [amount, setAmount] = useState<number | null>(null);
@@ -23,19 +25,17 @@ export default function Home() {
   const { profile, loading, userID, fetchProfile } = useProfile();
   const fetchDonation = async () => {
     if (profile) {
-      const response = await getDonationWithFilter(
-       userID,
-        amount,
-        dateFilter
-      );
+      setLoading(true);
+      const response = await getDonationWithFilter(userID, amount, dateFilter);
       setDonation(response.data);
       setTotalAmount(response.totalAmount);
+      setLoading(false);
     }
   };
-  useEffect(()=>{
-    fetchProfile()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  useEffect(() => {
+    fetchProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => {
     fetchDonation();
     if (!profile && !loading) {
@@ -49,7 +49,7 @@ export default function Home() {
   const handleSelectDate = (value: string) => {
     setDateFilter(Number(value));
   };
-  if (!profile || typeof profile !== 'object') {
+  if (!profile || typeof profile !== "object") {
     return <PageLoading />;
   }
   const copylink = () => {
@@ -86,19 +86,32 @@ export default function Home() {
         <hr className="mt-2 " />
         <div className="flex py-4 items-center ">
           <p className="font-bold text-xl px-3">Earnings</p>
-         <SelectDate onValueChange={handleSelectDate} defaultValue="last 30 day"/>
+          <SelectDate
+            onValueChange={handleSelectDate}
+            defaultValue="last 30 day"
+          />
         </div>
         <p className="text-3xl mx-2 p-2 font-bold">${totalAmount}</p>
       </div>
       <div className="flex justify-between items-center p-2 m-2 w-full">
         <p className="font-bold">Recent transactions</p>
         <div className="flex items-center px-2 row-reverse  h-8 rounded-sm justify-center">
-         <SelectAmount onValueChange={handleSelect} amounts={amounts}/>
+          <SelectAmount onValueChange={handleSelect} amounts={amounts} />
         </div>
       </div>
-      {donations?.map((donation, index) => (
-        <Donar key={index} donation={donation} />
-      ))}
+      {!loading1 ? (
+        <>
+          {donations?.map((donation, index) => (
+            <Donar key={index} donation={donation} />
+          ))}
+        </>
+      ) : (
+        <>
+          {[...Array(10)].map((_, i) => (
+            <LoadingDonar key={i} />
+          ))}
+        </>
+      )}
     </div>
   );
 }
