@@ -1,3 +1,5 @@
+'use client'
+
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -7,10 +9,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 export default function Email({
   form,
+  loading
 }: {
   form: UseFormReturn<
     {
@@ -25,8 +29,10 @@ export default function Email({
       username: string;
       about?: string | undefined;
     }
-  >;
+  >,
+  loading : boolean
 }) {
+ 
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -70,6 +76,7 @@ export default function Email({
         />
       </div>
       <Button
+      disabled={loading}
         type="submit"
         variant={
           form.watch("email").length !== 0
@@ -79,6 +86,7 @@ export default function Email({
             : "secondary"
         }
       >
+        {loading && <Loader2 className="animate-spin" />}
         Continue
       </Button>
     </div>

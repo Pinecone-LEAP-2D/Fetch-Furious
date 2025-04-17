@@ -3,7 +3,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { mainPageData } from "@/lib/localFile";
 import {
   BookHeart,
@@ -14,13 +13,13 @@ import {
   Heart,
   Instagram,
   Mail,
-  Search,
   Star,
   Twitter,
   Youtube,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
+import { ExploreUser } from "./_features/ExploreUser";
 
 export default function Home() {
   const router = useRouter();
@@ -69,13 +68,7 @@ export default function Home() {
           </Button>
         </div>
         <div className="flex gap-6">
-          <div className="w-[250px] flex h-full relative items-center">
-            <Search className="absolute left-4" size={18} />
-            <Input
-              className=" pl-10 h-full w-full rounded-[30px] font-semibold bg-black/3 hover:bg-black/8"
-              placeholder="Search a creators"
-            />
-          </div>
+          <ExploreUser />
           <Button
             onClick={() => router.push("/sign-in")}
             className="py-6 text-lg font-semibold rounded-3xl cursor-pointer"

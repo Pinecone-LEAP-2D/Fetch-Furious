@@ -12,7 +12,9 @@ import { Label } from "@/components/ui/label";
 import { useProfile } from "@/provider/ProfileProvider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -21,6 +23,7 @@ const signInSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 export default function SignInForm() {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { fetchProfile } = useProfile();
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -33,23 +36,26 @@ export default function SignInForm() {
 
   const signIn = async (values: z.infer<typeof signInSchema>) => {
     try {
+      setLoading(true);
       const response = await axios.post("/api/auth/sign-in", {
         email: values.email,
         password: values.password,
       });
       localStorage.setItem("token", response.data.token);
-      await fetchProfile()
+      await fetchProfile();
       router.push("/dashboard");
     } catch (error) {
-      const err = error as AxiosError<{ error: string }>;      
+      const err = error as AxiosError<{ error: string }>;
       const errorMessage = err.response?.data.error;
       if (errorMessage == "user not found") {
         form.setError("email", { message: errorMessage });
       } else if (errorMessage === "wrong password or email") {
         form.setError("password", { message: errorMessage });
-      }else {
+      } else {
         console.error("Sign-in error:", errorMessage || err.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -95,7 +101,10 @@ export default function SignInForm() {
             )}
           />
         </div>
-        <Button type="submit">Continue</Button>
+        <Button disabled={loading} type="submit">
+          {" "}
+          {loading && <Loader2 className="animate-spin" />}Continue
+        </Button>
       </form>
     </FormProvider>
   );
