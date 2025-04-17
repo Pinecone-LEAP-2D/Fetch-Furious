@@ -58,7 +58,7 @@ export default function Home() {
       >
         <div className="absoute w-full absolute flex justify-center -z-10">
           {" "}
-          <img src="https://res-console.cloudinary.com/dqhu3nn3p/thumbnails/v1/image/upload/v1744870776/bnB0anBwY3VuZGR1eW5uc2t6ZXA=/drilldown" className="h-12" />
+          <img src="https://res.cloudinary.com/dqhu3nn3p/image/upload/v1744872128/j2tzdl8an6gtfqekh489.png" className="h-12" />
         </div>
         <div className="flex gap-4">
           <Button variant="ghost" className="rounded-2xl">
