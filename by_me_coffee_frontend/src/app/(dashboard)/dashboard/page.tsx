@@ -28,8 +28,8 @@ export default function Home() {
         amount,
         dateFilter
       );
-      setDonation(response.data);
-      setTotalAmount(response.totalAmount);
+      setDonation(response?.data);
+      setTotalAmount(response?.totalAmount);
     }
   };
   useEffect(()=>{
