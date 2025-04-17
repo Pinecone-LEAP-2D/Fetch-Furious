@@ -27,8 +27,8 @@ export default function Home() {
     if (profile) {
       setLoading(true);
       const response = await getDonationWithFilter(userID, amount, dateFilter);
-      setDonation(response.data);
-      setTotalAmount(response.totalAmount);
+      setDonation(response?.data);
+      setTotalAmount(response?.totalAmount);
       setLoading(false);
     }
   };

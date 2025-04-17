@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useBank } from "@/provider/BankCardProvider";
 import { bankCardSchema } from "@/schema/zodSchema";
 import { putBankCard } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,15 +22,23 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 export default function BankCardEdit() {
+  const { bankcard } = useBank();
+
+  const expiryDate = bankcard?.expiryDate
+    ? new Date(bankcard.expiryDate)
+    : new Date();
+  const year = expiryDate.getFullYear();
+  const month = expiryDate.getMonth() + 1;
+
   const form = useForm<z.infer<typeof bankCardSchema>>({
     resolver: zodResolver(bankCardSchema),
-    defaultValues: {
-      country: "",
-      firstName: "",
-      lastName: "",
-      cardNumber: "",
-      year: "",
-      month: "",
+    values: {
+      country: bankcard?.country ? bankcard.country : "",
+      firstName: bankcard?.firstName ? bankcard.firstName : "",
+      lastName: bankcard?.lastName ? bankcard.lastName : "",
+      cardNumber: bankcard?.cardNumber ? bankcard.cardNumber : "",
+      year: year.toString(),
+      month: month.toString(),
     },
   });
   const updatedBanCard = async (value: z.infer<typeof bankCardSchema>) => {

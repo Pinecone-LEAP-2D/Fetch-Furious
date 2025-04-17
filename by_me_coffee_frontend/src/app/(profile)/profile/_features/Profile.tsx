@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { postProfile } from "@/utils/request";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Camera } from "lucide-react";
+import { Camera, Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -33,6 +33,7 @@ export const Profile = ({
   const [uploadImage, setUploadImage] = useState(false);
   const [avatarImage, setAvatarImage] = useState("");
   const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false)
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -43,13 +44,16 @@ export const Profile = ({
     },
   });
   const saveChanges = async (values: z.infer<typeof profileSchema>) => {
+    setLoading(true)
     try {
       const response = await postProfile(values, avatarImage);
       if (response) {
         setStep("bankCard");      
       }
+      
     } catch (error) {
       console.log(error);
+      setLoading(false)
     }
   };
   const ProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -179,8 +183,8 @@ export const Profile = ({
           />
         </div>
         <div className="flex  gap-[10px] w-[510px] justify-end">
-          <Button type="submit" className="px-20 py-2">
-            Continue
+          <Button type="submit" className="px-20 py-2 " disabled={loading}>
+            {loading ? <Loader2 className="animate-spin" /> : "Continue" }
           </Button>
         </div>
       </form>

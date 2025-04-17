@@ -8,11 +8,13 @@ import { z } from "zod";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { toast } from "sonner";
 import { CheckCircle2Icon } from "lucide-react";
+import { useProfile } from "@/provider/ProfileProvider";
 export default function SuccessEdit() {
+  const {profile} = useProfile()
   const form = useForm<z.infer<typeof successMessageSchema>>({
     resolver: zodResolver(successMessageSchema),
-    defaultValues: {
-      successMessage: "",
+    values: {
+      successMessage: profile?.successMessage ? profile.successMessage :  "",
     },
   });
   const updatedSucess = async (value: z.infer<typeof successMessageSchema>) => {
