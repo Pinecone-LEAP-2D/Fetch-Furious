@@ -23,11 +23,11 @@ const SelectCountry = ({
       <SelectContent>
         <SelectGroup>
           <SelectLabel>Country</SelectLabel>
-          <SelectItem value="America">🇺🇸America</SelectItem>
-          <SelectItem value="China">🇨🇳China</SelectItem>
-          <SelectItem value="Russia">🇷🇺Russia</SelectItem>
-          <SelectItem value="Thailand">🇹🇭Thailand</SelectItem>
-          <SelectItem value="Mongolia">🇲🇳Mongolia</SelectItem>
+          <SelectItem value="America">America</SelectItem>
+          <SelectItem value="China">China</SelectItem>
+          <SelectItem value="Russia">Russia</SelectItem>
+          <SelectItem value="Thailand">Thailand</SelectItem>
+          <SelectItem value="Mongolia">Mongolia</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

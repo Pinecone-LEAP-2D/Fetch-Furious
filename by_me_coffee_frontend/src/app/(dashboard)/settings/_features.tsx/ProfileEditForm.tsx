@@ -1,7 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProfile } from "@/provider/ProfileProvider";
@@ -20,7 +25,7 @@ export default function ProfileEdit() {
   const [image, setImage] = useState<File>();
   const form = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
-    defaultValues: {
+    values: {
       avatarImage: profile?.avatarImage ? profile.avatarImage : "",
       name: profile?.name ? profile.name : "",
       about: profile?.about ? profile.about : "",
@@ -29,7 +34,7 @@ export default function ProfileEdit() {
   });
   const editProfile = async (value: z.infer<typeof profileSchema>) => {
     console.log(value);
-    
+
     try {
       if (!image) return;
       const formData = new FormData();
@@ -47,9 +52,13 @@ export default function ProfileEdit() {
         throw new Error("Upload failed");
       }
       const result = await response.json();
-      const response1 =  await putProfile(value, result.secure_url);
+      const response1 = await putProfile(value, result.secure_url);
       if (response1) {
-        toast(<div className="flex">profile updated <CheckCircle2Icon className="ml-10" /></div>)
+        toast(
+          <div className="flex">
+            profile updated <CheckCircle2Icon className="ml-10" />
+          </div>
+        );
       }
     } catch (error) {
       console.error(error);
@@ -71,7 +80,7 @@ export default function ProfileEdit() {
               control={form.control}
               name="avatarImage"
               render={({}) => (
-                <ImagePreview setImage={setImage} profile={profile}/>
+                <ImagePreview setImage={setImage} profile={profile} />
               )}
             />
             <FormField
@@ -87,7 +96,7 @@ export default function ProfileEdit() {
                       className="flex px-3 py-4 w-[460px] items-center"
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -105,7 +114,7 @@ export default function ProfileEdit() {
                       className="flex px-3 py-4 w-[460px] items-center"
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />

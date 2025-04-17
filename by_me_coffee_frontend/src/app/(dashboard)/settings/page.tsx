@@ -1,6 +1,5 @@
 "use client";
 
-
 import * as React from "react";
 import ProfileEdit from "./_features.tsx/ProfileEditForm";
 import BankCardEdit from "./_features.tsx/BankCardEditForm";
@@ -13,7 +12,7 @@ const Settings = () => {
       <ProfileEdit />
       <BankCardEdit />
       <PasswordEditForm />
-      <SuccessEdit/>
+      <SuccessEdit />
     </div>
   );
 };
