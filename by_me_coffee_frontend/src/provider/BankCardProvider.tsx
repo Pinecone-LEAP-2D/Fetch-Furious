@@ -18,8 +18,9 @@ export const BankCardProvider = ({ children }: { children: ReactNode }) => {
   const [bankcard, setBankCard] = useState<BankCard>();
   const getBank = async () => {
     try {
-      const response = await getBankCard()
-      if (!response) return
+      const response = await getBankCard();
+
+      if (!response) return;
       setBankCard(response.data);
     } catch (error) {
       console.log(error);
@@ -27,7 +28,7 @@ export const BankCardProvider = ({ children }: { children: ReactNode }) => {
   };
   useEffect(() => {
     getBank();
-  }, []);  
+  }, []);
   return (
     <BankCardContext.Provider value={{ bankcard }}>
       {children}

@@ -8,7 +8,7 @@ export const successMessageSchema = z.object({
   successMessage: z.string(),
 });
 // const base_url = 'http://localhost:4000'
-const base_url = 'https://fetch-furious.onrender.com'
+const base_url = "https://fetch-furious.onrender.com";
 export const postProfile = async (
   values: z.infer<typeof profileSchema>,
   image: string
@@ -39,9 +39,8 @@ export const postProfile = async (
   }
 };
 export const getProfile = async (userId: string | string[]) => {
-  try {    
-    const response = await axios.get(
-      `${base_url}/profile/user/${userId}`,);
+  try {
+    const response = await axios.get(`${base_url}/profile/user/${userId}`);
     return response;
   } catch (error) {
     console.log(error);
@@ -95,47 +94,46 @@ export const addBackground = async (
 export const sendDonation = async (
   data: z.infer<typeof donationSchema>,
   recipientId: number,
-  donorId : number | undefined
+  donorId: number | undefined
 ) => {
-
   try {
     const response = await axios.post(
       `${base_url}/donation/${recipientId}/${donorId}`,
       {
         amount: data.amount,
         specialMessage: data.specialMessage,
-      },{
-        params : {
-          recipientId, donorId
-        }
+      },
+      {
+        params: {
+          recipientId,
+          donorId,
+        },
       }
-
     );
-    return response    
+    return response;
   } catch (error) {
     console.log(error);
   }
 };
 export const sendDonationUnsigned = async (
   data: z.infer<typeof donationSchema>,
-  recipientId: number,
+  recipientId: number
 ) => {
-
   try {
     const response = await axios.post(
       `${base_url}/donation/unsigned`,
       {
         amount: data.amount,
         specialMessage: data.specialMessage,
-        socialURLOrBuyMeACoffee : data.socialURLOrBuyMeACoffee
-      },{
-        params : {
-          recipientId
-        }
+        socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
+      },
+      {
+        params: {
+          recipientId,
+        },
       }
-
     );
-    return response    
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -145,7 +143,7 @@ export const getQr = async (
   data: z.infer<typeof donationSchema>,
   recipientId: number
 ) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token");
   try {
     const response = await axios.post(
       `${base_url}/qr/signed/${recipientId}`,
@@ -153,13 +151,14 @@ export const getQr = async (
         amount: data.amount,
         socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
         specialMessage: data.specialMessage,
-      },{
-        headers:{
-          Authorization : token
-        }
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
       }
-    );    
-    return response
+    );
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -175,9 +174,9 @@ export const getQrUnsigne = async (
         amount: data.amount,
         socialURLOrBuyMeACoffee: data.socialURLOrBuyMeACoffee,
         specialMessage: data.specialMessage,
-      },
-    );    
-    return response
+      }
+    );
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -189,7 +188,7 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
   }
 
   try {
-    const response= await axios.post(
+    const response = await axios.post(
       `${base_url}/bankcard/`,
       {
         country: value.country,
@@ -204,16 +203,14 @@ export const addBankCard = async (value: z.infer<typeof bankCardSchema>) => {
         },
       }
     );
-    return response
+    return response;
   } catch (error) {
     console.log(error);
   }
 };
 export const getDonation = async (userId: string | string[] | number) => {
   try {
-    const response = await axios.get(
-      `${base_url}/donation/all/${userId}`
-    );
+    const response = await axios.get(`${base_url}/donation/all/${userId}`);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -225,15 +222,12 @@ export const getDonationWithFilter = async (
   date: number | string
 ) => {
   try {
-    const response = await axios.get(
-      `${base_url}/donation/${userId}`,
-      {
-        params: {
-          amount: amount,
-          date: addDays(new Date(), -date).toISOString(),
-        },
-      }
-    );
+    const response = await axios.get(`${base_url}/donation/${userId}`, {
+      params: {
+        amount: amount,
+        date: addDays(new Date(), -date).toISOString(),
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);
@@ -262,7 +256,7 @@ export const putProfile = async (
         },
       }
     );
-    return response
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -289,7 +283,7 @@ export const putBankCard = async (value: z.infer<typeof bankCardSchema>) => {
         },
       }
     );
-return response
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -313,7 +307,7 @@ export const putSuccess = async (
         },
       }
     );
-    return response
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -335,7 +329,7 @@ export const putUser = async (values: z.infer<typeof passwordSchema>) => {
         },
       }
     );
-   return response
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -359,15 +353,13 @@ export const getUserProfile = async () => {
 export const getBankCard = async () => {
   const token = localStorage.getItem(`token`);
   try {
-    const response = await axios.get(`${base_url}/bankcard`, {
+    const { data } = await axios.get(`${base_url}/bankcard`, {
       headers: {
         Authorization: token,
       },
     });
-    return response
+    return data;
   } catch (error) {
     console.log(error);
   }
-}; 
-
-
+};
